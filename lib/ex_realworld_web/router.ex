@@ -11,6 +11,14 @@ defmodule ExRealworldWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
+    plug :fetch_flash
+    plug :put_secure_browser_headers
+  end
+
+  scope "/api", ExRealwordldWeb do
+    pipe_through :api
+
   end
 
   scope "/", ExRealworldWeb do
