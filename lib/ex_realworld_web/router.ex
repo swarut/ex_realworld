@@ -16,9 +16,10 @@ defmodule ExRealworldWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  scope "/api", ExRealwordldWeb do
+  scope "/api", ExRealworldWeb.Api, as: :api do
     pipe_through :api
 
+    resources "/users", UserController
   end
 
   scope "/", ExRealworldWeb do
