@@ -11,8 +11,8 @@ config :logger, level: :warn
 
 # Configure your database
 config :ex_realworld, ExRealworld.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "ex_realworld_test",
+  username: System.get_env("REAL_WORLD_TEST_DB_USERNAME"),
+  password: System.get_env("REAL_WORLD_TEST_DB_PASSWORD"),
+  database: System.get_env("REAL_WORLD_TEST_DB"),
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
