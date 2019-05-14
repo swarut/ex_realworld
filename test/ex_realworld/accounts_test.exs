@@ -6,8 +6,8 @@ defmodule ExRealworld.AccountsTest do
   describe "users" do
     alias ExRealworld.Accounts.User
 
-    @valid_attrs %{bio: "some bio", email: "some email", image: "some image", token: "some token", username: "some username"}
-    @update_attrs %{bio: "some updated bio", email: "some updated email", image: "some updated image", token: "some updated token", username: "some updated username"}
+    @valid_attrs %{bio: "some bio", email: "some email", image: "some image", token: "some token", username: "some username", password: "password"}
+    @update_attrs %{bio: "some updated bio", email: "some updated email", image: "some updated image", token: "some updated token", username: "some updated username", password: "password"}
     @invalid_attrs %{bio: nil, email: nil, image: nil, token: nil, username: nil}
 
     def user_fixture(attrs \\ %{}) do
