@@ -68,8 +68,8 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Configure your database
 config :ex_realworld, ExRealworld.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "ex_realworld_dev",
+  username: System.get_env("REAL_WORLD_DEV_DB_USERNAME"),
+  password: System.get_env("REAL_WORLD_DEV_DB_PASSWORD"),
+  database: System.get_env("REAL_WORLD_DEV_DB"),
   hostname: "localhost",
   pool_size: 10
