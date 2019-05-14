@@ -3,6 +3,8 @@ defmodule ExRealworldWeb.Api.UserController do
 
   alias ExRealworld.Accounts
 
+  action_fallback ExRealworldWeb.FallbackController
+
   def index(conn, _params) do
     users = Accounts.list_users
     render(conn, "index.json", users: users)

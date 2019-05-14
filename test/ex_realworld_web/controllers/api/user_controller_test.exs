@@ -11,7 +11,7 @@ defmodule ExRealworldWeb.Api.UserControllerTest do
   describe "/api/users" do
     test "lists all users", %{conn: conn} do
       conn = get(conn, "/api/users")
-      assert json_response(conn, 200) == []
+      assert json_response(conn, 200) == %{"users" => []}
     end
   end
 
