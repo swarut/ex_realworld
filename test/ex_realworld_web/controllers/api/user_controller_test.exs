@@ -20,8 +20,9 @@ defmodule ExRealworldWeb.Api.UserControllerTest do
   describe "create user" do
     test "creates and returns user if data is valid", %{conn: conn} do
       conn = post(conn, Routes.api_user_path(conn, :create, user: @valid_user_attributes))
-      assert %{"id" => id} = json_response(conn, 201)
+      assert %{"user" => user} = json_response(conn, 201)
     end
   end
 
 end
+

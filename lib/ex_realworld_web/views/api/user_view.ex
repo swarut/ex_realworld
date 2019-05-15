@@ -8,6 +8,14 @@ defmodule ExRealworldWeb.Api.UserView do
   end
 
   def render("user.json", %{user: user}) do
-    %{id: user.id}
+    %{
+      user: %{
+        email: user.email,
+        token: user.token,
+        username: user.username,
+        bio: user.bio,
+        image: user.image
+      }
+    }
   end
 end

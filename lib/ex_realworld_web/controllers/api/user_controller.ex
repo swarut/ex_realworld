@@ -16,15 +16,5 @@ defmodule ExRealworldWeb.Api.UserController do
       |> put_status(:created)
       |> render("user.json", user: user)
     end
-    # case Accounts.create_user(user_params) do
-    #   {:ok, user} ->
-    #     conn
-    #     |> put_status(:created)
-    #     |> render("user.json", user: user)
-    #   {:error, changeset} ->
-    #     conn
-    #     |> put_status(:bad_request)
-    #     |> text("yo")
-    # end
   end
 end
