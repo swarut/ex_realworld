@@ -34,8 +34,8 @@ defmodule ExRealworld.AccountsTest do
       assert user.bio == "some bio"
       assert user.email == "some email"
       assert user.image == "some image"
-      assert user.token == "some token"
       assert user.username == "some username"
+      assert String.length(user.token) > 0
     end
 
     test "create_user/1 with invalid data returns error changeset" do

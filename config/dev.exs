@@ -73,3 +73,7 @@ config :ex_realworld, ExRealworld.Repo,
   database: System.get_env("REAL_WORLD_DEV_DB"),
   hostname: "localhost",
   pool_size: 10
+
+config :ex_realworld, ExRealworld.UserToken,
+  issuer: "ex_realworld",
+  secret_key: "lhF2FI1RtyRltRwpTalZoU4I2NL+wkcdxW4kFiSspj+WVrXOXJZBT5MjZwzol5y5"

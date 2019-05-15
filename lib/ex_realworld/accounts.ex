@@ -50,9 +50,10 @@ defmodule ExRealworld.Accounts do
 
   """
   def create_user(attrs \\ %{}) do
-    %User{}
-    |> User.changeset(attrs)
-    |> Repo.insert()
+    with {:ok, user} <- %User{} |> User.changeset(attrs) |> Repo.insert() do
+      {:ok, token, _claims} = ExRealworld.UserToken.encode_and_sign(%{id: user.id}, %{claim: "claim"})
+      update_user(user, %{token: token})
+    end
   end
 
   @doc """
@@ -69,7 +70,7 @@ defmodule ExRealworld.Accounts do
   """
   def update_user(%User{} = user, attrs) do
     user
-    |> User.changeset(attrs)
+    |> User.update_changeset(attrs)
     |> Repo.update()
   end
 

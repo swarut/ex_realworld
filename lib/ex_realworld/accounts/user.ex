@@ -21,7 +21,12 @@ defmodule ExRealworld.Accounts.User do
     |> validate_required([:email, :password])
     |> encrypt_password
     |> strip_password
+  end
 
+  def update_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:email, :username, :token, :bio, :image])
+    |> validate_email_not_nil
   end
 
   defp encrypt_password(changeset = %Ecto.Changeset{valid?: true, changes: %{password: password}}) do
@@ -40,4 +45,10 @@ defmodule ExRealworld.Accounts.User do
     changeset
   end
 
+  defp validate_email_not_nil(changeset = %Ecto.Changeset{valid?: true, changes: %{email: nil}}) do
+    add_error(changeset, :email, "can not be null")
+  end
+  defp validate_email_not_nil(changeset) do
+    changeset
+  end
 end

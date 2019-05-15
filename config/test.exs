@@ -16,3 +16,7 @@ config :ex_realworld, ExRealworld.Repo,
   database: System.get_env("REAL_WORLD_TEST_DB"),
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :ex_realworld, ExRealworld.UserToken,
+  issuer: "ex_realworld",
+  secret_key: "lhF2FI1RtyRltRwpTalZoU4I2NL+wkcdxW4kFiSspj+WVrXOXJZBT5MjZwzol5y5"
