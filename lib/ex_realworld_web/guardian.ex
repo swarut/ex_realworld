@@ -1,4 +1,4 @@
-defmodule ExRealworld.UserToken do
+defmodule ExRealworldWeb.UserToken do
   use Guardian, otp_app: :ex_realworld
 
   def subject_for_token(resource, _claim) do

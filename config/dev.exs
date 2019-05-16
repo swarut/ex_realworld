@@ -74,6 +74,6 @@ config :ex_realworld, ExRealworld.Repo,
   hostname: "localhost",
   pool_size: 10
 
-config :ex_realworld, ExRealworld.UserToken,
+config :ex_realworld, ExRealworldWeb.UserToken,
   issuer: "ex_realworld",
   secret_key: "lhF2FI1RtyRltRwpTalZoU4I2NL+wkcdxW4kFiSspj+WVrXOXJZBT5MjZwzol5y5"
