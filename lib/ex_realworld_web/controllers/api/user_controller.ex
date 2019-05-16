@@ -19,7 +19,9 @@ defmodule ExRealworldWeb.Api.UserController do
   end
 
   def login(conn, _params) do
+    user = Accounts.get_last_user
     conn
-    |> text("yo")
+    |> put_status(:ok)
+    |> render("user.json", user: user)
   end
 end

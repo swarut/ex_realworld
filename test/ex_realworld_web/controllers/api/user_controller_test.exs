@@ -25,9 +25,17 @@ defmodule ExRealworldWeb.Api.UserControllerTest do
   end
 
   describe "login user" do
-    test "logins the user and returns user information", %{conn: conn} do
+    test "with right credential, logins the user and returns user information", %{conn: conn} do
+      conn = post(conn, Routes.api_user_path(conn, :create, user: @valid_user_attributes))
       conn = post(conn, Routes.api_login_path(conn, :login, user: @valid_user_attributes))
       assert %{"user" => user} = json_response(conn, 200)
+      assert user["email"] == @valid_user_attributes.email
+    end
+    test "with wrong credential, get error", %{conn: conn} do
+      conn = post(conn, Routes.api_user_path(conn, :create, user: @valid_user_attributes))
+      conn = post(conn, Routes.api_login_path(conn, :login, user: Map.merge(@valid_user_attributes, %{password: "2"})))
+      assert %{"user" => user} = json_response(conn, 200)
+      assert user["email"] == @valid_user_attributes.email
     end
   end
 

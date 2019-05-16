@@ -37,6 +37,8 @@ defmodule ExRealworld.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_last_user, do: Repo.one(from u in User, order_by: [desc: u.id], limit: 1)
+
   @doc """
   Creates a user.
 
