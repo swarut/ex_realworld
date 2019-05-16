@@ -24,5 +24,12 @@ defmodule ExRealworldWeb.Api.UserControllerTest do
     end
   end
 
+  describe "login user" do
+    test "logins the user and returns user information", %{conn: conn} do
+      conn = post(conn, Routes.api_login_path(conn, :login, user: @valid_user_attributes))
+      assert %{"user" => user} = json_response(conn, 200)
+    end
+  end
+
 end
 

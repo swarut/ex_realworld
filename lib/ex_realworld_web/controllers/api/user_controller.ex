@@ -17,4 +17,9 @@ defmodule ExRealworldWeb.Api.UserController do
       |> render("user.json", user: user)
     end
   end
+
+  def login(conn, _params) do
+    conn
+    |> text("yo")
+  end
 end

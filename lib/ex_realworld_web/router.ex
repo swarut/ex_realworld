@@ -12,7 +12,6 @@ defmodule ExRealworldWeb.Router do
   pipeline :api do
     plug :accepts, ["json"]
     plug :fetch_session
-    plug :fetch_flash
     plug :put_secure_browser_headers
   end
 
@@ -20,6 +19,7 @@ defmodule ExRealworldWeb.Router do
     pipe_through :api
 
     resources "/users", UserController
+    post "/users/login", UserController, :login, as: :login
   end
 
   scope "/", ExRealworldWeb do
