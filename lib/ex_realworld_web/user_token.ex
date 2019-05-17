@@ -11,7 +11,8 @@ defmodule ExRealworldWeb.UserToken do
 
   def resource_from_claims(claims) do
     id = claims["sub"]
-    resource = "a #{id}"
+    email = claims["email"]
+    resource = %{id: id, email: email}
     {:ok, resource}
   end
   def resource_from_claims(_claims) do
