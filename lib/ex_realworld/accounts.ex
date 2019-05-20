@@ -41,7 +41,7 @@ defmodule ExRealworld.Accounts do
 
   def get_user_by(clause), do: Repo.get_by(User, clause)
 
-  def login(email, token) do
+  def authenticate(email, token) do
     get_user_by(email: email, token: token)
   end
 
