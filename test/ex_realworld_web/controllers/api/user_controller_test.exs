@@ -33,13 +33,14 @@ defmodule ExRealworldWeb.Api.UserControllerTest do
   end
 
   describe "index" do
-    test "returns current user", %{conn: conn} do
-      conn = post(conn, Routes.api_user_path(conn, :create, user: @valid_user_attributes))
-      conn = post(conn, Routes.api_login_path(conn, :login, user: @valid_user_attributes))
-      %{"user" => user} = json_response(conn, 200)
 
-      conn = get(conn, Routes.api_user_path(conn, :index))
-      assert %{"user" => user} = json_response(conn, 200)
+    test "returns current user", %{conn: conn} do
+      post(conn, Routes.api_user_path(conn, :create, user: @valid_user_attributes))
+      login_conn = post(conn, Routes.api_login_path(conn, :login, user: @valid_user_attributes))
+      %{"user" => user} = json_response(login_conn, 200)
+      index_conn = conn |> put_req_header("authorization", user["token"])
+      index_conn = get(index_conn, Routes.api_user_path(conn, :index))
+      assert %{"user" => user} = json_response(index_conn, 200)
       assert user["email"] == @valid_user_attributes.email
     end
   end

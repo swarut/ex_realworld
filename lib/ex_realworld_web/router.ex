@@ -12,6 +12,7 @@ defmodule ExRealworldWeb.Router do
   pipeline :api do
     plug :accepts, ["json"]
     plug :fetch_session
+    plug ExRealworldWeb.Api.Auth
     plug :put_secure_browser_headers
   end
 
