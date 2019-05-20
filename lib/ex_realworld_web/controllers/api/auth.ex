@@ -1,6 +1,8 @@
 defmodule ExRealworldWeb.Api.Auth do
   import Plug.Conn
 
+  alias ExRealworld.Accounts
+
   def init(opts), do: opts
 
   def call(conn, _opts) do
@@ -10,7 +12,14 @@ defmodule ExRealworldWeb.Api.Auth do
       [token] ->
         IO.puts("AUTH - token = '#{token}'")
         case ExRealworldWeb.UserToken.decode_and_verify(token) do
-          {:ok, claims} -> IO.puts("CLAIMS----  = #{inspect claims}")
+          {:ok, claims} ->
+            {:ok, resource} = ExRealworldWeb.UserToken.resource_from_claims(claims)
+            IO.puts("CLAIMS----  = #{inspect claims}")
+            IO.puts("RESOURCE----  = #{inspect resource}")
+            # user = Accounts.get_user_by(token: token)
+            user = Accounts.login(resource.email, token)
+            IO.puts("User----  = #{inspect user}")
+            conn |> assign(:current_user, user)
           {:error, errors} -> IO.puts("ERRORS----  = #{inspect errors}")
         end
     end

@@ -39,6 +39,13 @@ defmodule ExRealworld.Accounts do
 
   def get_last_user, do: Repo.one(from u in User, order_by: [desc: u.id], limit: 1)
 
+  def get_user_by(clause), do: Repo.get_by(User, clause)
+
+  def login(email, token) do
+    get_user_by(email: email, token: token)
+  end
+
+
   @doc """
   Creates a user.
 
@@ -53,7 +60,7 @@ defmodule ExRealworld.Accounts do
   """
   def create_user(attrs \\ %{}) do
     with {:ok, user} <- %User{} |> User.changeset(attrs) |> Repo.insert() do
-      {:ok, token, _claims} = ExRealworldWeb.UserToken.encode_and_sign(%{id: user.id}, %{claim: "claim"})
+      {:ok, token, _claims} = ExRealworldWeb.UserToken.encode_and_sign(%{id: user.id}, %{email: user.email})
       update_user(user, %{token: token})
     end
   end
