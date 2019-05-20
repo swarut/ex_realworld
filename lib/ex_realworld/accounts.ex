@@ -41,8 +41,17 @@ defmodule ExRealworld.Accounts do
 
   def get_user_by(clause), do: Repo.get_by(User, clause)
 
-  def authenticate(email, token) do
-    get_user_by(email: email, token: token)
+  def authenticate_with_email_and_token(email, token) do
+    case get_user_by(email: email) do
+      nil ->
+        {:error, :user_not_found}
+      user ->
+        t = user.token
+        case token do
+          ^t -> {:ok, user}
+          _ -> {:error, :invalid_token}
+        end
+    end
   end
 
 
