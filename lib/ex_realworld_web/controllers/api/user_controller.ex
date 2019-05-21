@@ -6,8 +6,8 @@ defmodule ExRealworldWeb.Api.UserController do
   action_fallback ExRealworldWeb.FallbackController
 
   def index(conn, _params) do
-    users = Accounts.list_users
-    render(conn, "index.json", users: users)
+    user = conn.assigns[:current_user]
+    render(conn, "user.json", user: user)
   end
 
   def create(conn, %{"user" => user_params}) do
@@ -24,4 +24,5 @@ defmodule ExRealworldWeb.Api.UserController do
     |> put_status(:ok)
     |> render("user.json", user: user)
   end
+
 end
