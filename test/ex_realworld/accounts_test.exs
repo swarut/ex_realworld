@@ -90,6 +90,16 @@ defmodule ExRealworld.AccountsTest do
       {:ok, user} = Accounts.create_user(@valid_attrs)
       assert {:error, :invalid_token } = Accounts.authenticate_with_email_and_token(user.email, "randomtoken")
     end
+
+    test "authenticate_with_email_and_password returns user if valid" do
+      {:ok, user} = Accounts.create_user(@valid_attrs)
+      assert {:ok, user} = Accounts.authenticate_with_email_and_password(user.email, @valid_attrs.password)
+    end
+
+    test "authenticate_with_email_and_password returns error if password was invalid" do
+      {:ok, user} = Accounts.create_user(@valid_attrs)
+      assert {:error, "invalid password"} = Accounts.authenticate_with_email_and_password(user.email, "1123")
+    end
   end
 
 end

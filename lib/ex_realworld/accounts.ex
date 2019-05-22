@@ -40,6 +40,7 @@ defmodule ExRealworld.Accounts do
   def get_last_user, do: Repo.one(from u in User, order_by: [desc: u.id], limit: 1)
 
   def get_user_by(clause), do: Repo.get_by(User, clause)
+  def get_user_by!(clause), do: Repo.get_by!(User, clause)
 
   def authenticate_with_email_and_token(email, token) do
     case get_user_by(email: email) do
@@ -54,6 +55,11 @@ defmodule ExRealworld.Accounts do
     end
   end
 
+  def authenticate_with_email_and_password(email, password) do
+    with user <- get_user_by(email: email) do
+      Pbkdf2.check_pass(user, password)
+    end
+  end
 
   @doc """
   Creates a user.
