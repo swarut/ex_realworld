@@ -23,6 +23,7 @@ defmodule ExRealworldWeb do
 
       import Plug.Conn
       import ExRealworldWeb.Gettext
+      import ExRealworldWeb.Api.Auth, only: [authenticate_user: 2]
       alias ExRealworldWeb.Router.Helpers, as: Routes
     end
   end

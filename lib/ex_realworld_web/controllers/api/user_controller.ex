@@ -5,6 +5,8 @@ defmodule ExRealworldWeb.Api.UserController do
 
   action_fallback ExRealworldWeb.FallbackController
 
+  plug :authenticate_user when action in [:index, :show]
+
   def index(conn, _params) do
     user = conn.assigns[:current_user]
     render(conn, "user.json", user: user)

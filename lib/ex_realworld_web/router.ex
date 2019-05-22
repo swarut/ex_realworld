@@ -13,7 +13,6 @@ defmodule ExRealworldWeb.Router do
     plug :accepts, ["json"]
     plug :fetch_session
     plug ExRealworldWeb.Api.Auth
-    plug :put_secure_browser_headers
   end
 
   scope "/api", ExRealworldWeb.Api, as: :api do

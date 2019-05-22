@@ -27,9 +27,10 @@ defmodule ExRealworldWeb.Api.Auth do
   def authenticate_user(conn, _opts) do
     case conn.assigns[:current_user] do
       nil ->
+        IO.puts("================ no current user ")
         conn
         |> put_status(:unauthorized)
-        |> render("error.json", error: "unauthorizated")
+        |> render("error.json", error: "unauthorized")
         |> halt
 
       _user -> conn
