@@ -19,6 +19,7 @@ defmodule ExRealworld.Accounts.User do
     user
     |> cast(attrs, [:email, :username, :token, :bio, :image, :password])
     |> validate_required([:email, :password])
+    |> unique_constraint(:email)
     |> encrypt_password
     |> strip_password
   end
@@ -31,7 +32,7 @@ defmodule ExRealworld.Accounts.User do
 
   defp encrypt_password(changeset = %Ecto.Changeset{valid?: true, changes: %{password: password}}) do
     changeset
-    |> put_change(:encrypted_password, password)
+    |> put_change(:encrypted_password, Pbkdf2.hash_pwd_salt(password))
   end
   defp encrypt_password(changeset) do
     changeset
