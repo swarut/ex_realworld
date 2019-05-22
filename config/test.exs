@@ -20,3 +20,5 @@ config :ex_realworld, ExRealworld.Repo,
 config :ex_realworld, ExRealworldWeb.UserToken,
   issuer: "ex_realworld",
   secret_key: "lhF2FI1RtyRltRwpTalZoU4I2NL+wkcdxW4kFiSspj+WVrXOXJZBT5MjZwzol5y5"
+
+config :pbkdf2_elixir, rounds: 1
