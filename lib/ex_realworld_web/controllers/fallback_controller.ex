@@ -12,4 +12,11 @@ defmodule ExRealworldWeb.FallbackController do
     |> put_view(ExRealworldWeb.ErrorView)
     |> render(:"404")
   end
+
+  def call(conn, {:error, :invalid_token}) do
+    conn
+    |> put_status(:unauthorized)
+    |> put_view(ExRealworldWeb.ErrorView)
+    |> render(:"404")
+  end
 end

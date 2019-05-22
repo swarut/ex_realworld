@@ -1,12 +1,12 @@
 defmodule ExRealworldWeb.Api.Auth do
   import Plug.Conn
+  import Phoenix.Controller
 
   alias ExRealworld.Accounts
 
   def init(opts), do: opts
 
   def call(conn, _opts) do
-
     token = get_req_header(conn, "authorization")
     case token do
       [] ->
@@ -21,6 +21,18 @@ defmodule ExRealworldWeb.Api.Auth do
             IO.puts("ERRORS----  = #{inspect errors}")
             conn
         end
+    end
+  end
+
+  def authenticate_user(conn, _opts) do
+    case conn.assigns[:current_user] do
+      nil ->
+        conn
+        |> put_status(:unauthorized)
+        |> render("error.json", error: "unauthorizated")
+        |> halt
+
+      _user -> conn
     end
   end
 
