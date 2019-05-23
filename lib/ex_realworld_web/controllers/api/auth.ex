@@ -7,11 +7,11 @@ defmodule ExRealworldWeb.Api.Auth do
   def init(opts), do: opts
 
   def call(conn, _opts) do
-    token = get_req_header(conn, "authorization")
-    case token do
+    full_token = get_req_header(conn, "authorization")
+    case full_token do
       [] ->
         conn
-      [token] ->
+      ["Token " <> token ] ->
         case ExRealworldWeb.UserToken.decode_and_verify(token) do
           {:ok, claims} ->
             {:ok, resource} = ExRealworldWeb.UserToken.resource_from_claims(claims)
