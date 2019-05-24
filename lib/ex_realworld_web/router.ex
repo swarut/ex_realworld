@@ -19,8 +19,9 @@ defmodule ExRealworldWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:index]
-    get "/user", UserController, :index
     post "/users/login", UserController, :login, as: :login
+    get "/user", UserController, :index
+    put "/user", UserController, :update
   end
 
   scope "/", ExRealworldWeb do

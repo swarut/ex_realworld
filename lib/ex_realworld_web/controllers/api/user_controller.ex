@@ -5,7 +5,7 @@ defmodule ExRealworldWeb.Api.UserController do
 
   action_fallback ExRealworldWeb.FallbackController
 
-  plug :authenticate_user when action in [:index, :show]
+  plug :authenticate_user when action in [:index, :show, :update]
 
   def index(conn, _params) do
     user = conn.assigns[:current_user]
@@ -25,6 +25,14 @@ defmodule ExRealworldWeb.Api.UserController do
     conn
     |> put_status(:ok)
     |> render("user.json", user: user)
+  end
+
+  def update(conn, %{"user" => user_params}) do
+    with {:ok, user} <- Accounts.update_user(conn.assigns[:current_user], user_params) do
+      conn
+      |> put_status(:ok)
+      |> render("user.jsoon", user: user)
+    end
   end
 
 end
