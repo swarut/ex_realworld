@@ -22,6 +22,15 @@ defmodule ExRealworldWeb.Router do
     post "/users/login", UserController, :login, as: :login
     get "/user", UserController, :index
     put "/user", UserController, :update
+
+    get "/articles", ArticleController, :index
+    get "/articles/:slug", ArticleController, :show
+    get "/articles/feed", ArticleController, :feed
+    post "/articles", ArticleController, :create
+    put "/articles", ArticleController, :update
+    delete "/articles", ArticleController, :delete
+    # post "/articles/:slug/comments", ArticleController, :add_comment
+
   end
 
   scope "/", ExRealworldWeb do
