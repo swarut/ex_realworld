@@ -31,7 +31,7 @@ defmodule ExRealworldWeb.Api.UserController do
     with {:ok, user} <- Accounts.update_user(conn.assigns[:current_user], user_params) do
       conn
       |> put_status(:ok)
-      |> render("user.jsoon", user: user)
+      |> render("user.json", user: user)
     end
   end
 

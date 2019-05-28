@@ -59,7 +59,7 @@ defmodule ExRealworldWeb.Api.UserControllerTest do
       login_conn = post(conn, Routes.api_login_path(conn, :login, user: @valid_user_attributes))
       %{"user" => user} = json_response(login_conn, 200)
       update_conn = conn |> put_req_header("authorization", "Token " <> user["token"])
-      update_conn = post(update_conn, Routes.api_user_path(conn, :update, user), %User{bio: "my bio"})
+      update_conn = post(update_conn, Routes.api_user_path(conn, :update, user), bio: "my bio")
       assert %{"user" => user} = json_response(update_conn, 200)
       assert user.bio == "my bio"
     end
