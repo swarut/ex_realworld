@@ -19,15 +19,14 @@ defmodule ExRealworldWeb.Api.UserControllerTest do
   end
 
   describe "login user" do
-    setup [:create_user]
 
-    test "with right credential, logins the user and returns user information", %{conn: conn, user: user} do
+    test "with right credential, logins the user and returns user information", %{conn: conn} do
       conn = post(conn, Routes.api_login_path(conn, :login, user: @valid_user_attributes))
       assert %{"user" => user} = json_response(conn, 200)
       assert user["email"] == @valid_user_attributes.email
     end
 
-    test "with wrong credential, get error", %{conn: conn, user: user} do
+    test "with wrong credential, get error", %{conn: conn} do
       conn = post(conn, Routes.api_login_path(conn, :login, user: Map.merge(@valid_user_attributes, %{password: "2"})))
       assert %{"user" => user} = json_response(conn, 200)
       assert user["email"] == @valid_user_attributes.email
@@ -52,19 +51,14 @@ defmodule ExRealworldWeb.Api.UserControllerTest do
   end
 
   describe "update user" do
-    # test "with correct attributes, updates and returned updated user", %{conn: conn} do
-    #   post(conn, Routes.api_user_path(conn, :create, user: @valid_user_attributes))
-    #   login_conn = post(conn, Routes.api_login_path(conn, :login, user: @valid_user_attributes))
-    #   %{"user" => user} = json_response(login_conn, 200)
-    #   update_conn = conn |> put_req_header("authorization", "Token " <> user["token"])
-    #   update_conn = put(update_conn, Routes.api_user_path(conn, :update, user), user: %{bio: "my bio"})
-    #   assert %{"user" => user} = json_response(update_conn, 200)
-    #   assert user.bio == "my bio"
-    # end
+    setup [:create_user]
 
-    # test "with incorrect attributes, returns error" do
-
-    # end
+    test "with correct attributes, updates and returned updated user", %{conn: conn, user: user} do
+      update_conn = conn |> put_req_header("authorization", "Token " <> user.token)
+      update_conn = put(update_conn, Routes.api_user_path(conn, :update, user), user: %{bio: "my bio"})
+      assert %{"user" => user} = json_response(update_conn, 200)
+      assert user["bio"] == "my bio"
+    end
   end
 
   def fixture(:user) do
