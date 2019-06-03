@@ -16,18 +16,19 @@ defmodule ExRealworld.Contents.Article do
   @doc false
   def changeset(article, attrs) do
     article
-    |> cast(attrs, [:title, :description, :body])
+    |> cast(attrs, [:title, :description, :body, :favourites_count])
     |> validate_required([:title, :description, :body])
     |> slugify
     |> unique_constraint(:slug)
   end
 
-  defp slugify(changeset) do
-    title = changeset
-      |> get_change(:title)
+  defp slugify(changeset = %Ecto.Changeset{valid?: true, changes: %{title: title}}) do
+    title = title
       |> String.downcase
-      |> String.replace(" ", "_")
-      |> String.replace(~r/\W/, "")
+      |> String.replace(" ", "-")
     Ecto.Changeset.put_change(changeset, :slug, title)
+  end
+  defp slugify(changeset) do
+    changeset
   end
 end

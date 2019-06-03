@@ -34,7 +34,7 @@ defmodule ExRealworld.ContentsTest do
       assert article.body == "some body"
       assert article.description == "some description"
       assert article.favourites_count == 42
-      assert article.slug == "some slug"
+      assert article.slug == "some-title"
       assert article.title == "some title"
     end
 
@@ -48,7 +48,7 @@ defmodule ExRealworld.ContentsTest do
       assert article.body == "some updated body"
       assert article.description == "some updated description"
       assert article.favourites_count == 43
-      assert article.slug == "some updated slug"
+      assert article.slug == "some-updated-title"
       assert article.title == "some updated title"
     end
 
