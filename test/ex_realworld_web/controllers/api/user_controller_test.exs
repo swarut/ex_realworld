@@ -19,6 +19,7 @@ defmodule ExRealworldWeb.Api.UserControllerTest do
   end
 
   describe "login user" do
+    setup [:create_user]
 
     test "with right credential, logins the user and returns user information", %{conn: conn} do
       conn = post(conn, Routes.api_login_path(conn, :login, user: @valid_user_attributes))
