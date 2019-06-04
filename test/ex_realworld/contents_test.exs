@@ -21,12 +21,12 @@ defmodule ExRealworld.ContentsTest do
 
     test "list_articles/0 returns all articles" do
       article = article_fixture()
-      assert Contents.list_articles() == [article]
+      assert Enum.map(Contents.list_articles(), fn(article) -> article.id end) == [article.id]
     end
 
     test "get_article!/1 returns the article with given id" do
       article = article_fixture()
-      assert Contents.get_article!(article.id) == article
+      assert Contents.get_article!(article.id).id == article.id
     end
 
     test "create_article/1 with valid data creates a article" do
@@ -55,7 +55,7 @@ defmodule ExRealworld.ContentsTest do
     test "update_article/2 with invalid data returns error changeset" do
       article = article_fixture()
       assert {:error, %Ecto.Changeset{}} = Contents.update_article(article, @invalid_attrs)
-      assert article == Contents.get_article!(article.id)
+      assert article.id == Contents.get_article!(article.id).id
     end
 
     test "delete_article/1 deletes the article" do
