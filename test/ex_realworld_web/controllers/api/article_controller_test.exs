@@ -12,9 +12,10 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
 
   describe "list articles" do
     setup [:create_article]
+
     test "returns most recent 20 artiles", %{conn: conn} do
       conn = get(conn, Routes.api_article_path(conn, :index))
-      assert %{articles: articles} = json_response(conn, 200)
+      assert %{"articles" => articles, "articlesCount" => 1} = json_response(conn, 200)
     end
   end
 

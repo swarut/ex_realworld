@@ -4,26 +4,40 @@ defmodule ExRealworldWeb.Api.ArticleView do
   alias ExRealworldWeb.Api.ArticleView
 
   def render("articles.json", %{articles: articles}) do
-    render_many(articles, ArticleView, "article.json")
+    %{
+      articles: render_many(articles, ArticleView, "article.json"),
+      articlesCount: length(articles)
+    }
   end
 
   def render("article.json", %{article: article}) do
     %{
-      article: %{
-        tile: article.title,
-        slug: article.slug,
-        description: article.description,
-        body: article.body,
-        createdAt: article.inserted_at,
-        updatedAt: article.updated_at,
-        favouritesCount: article.favourites_count
-      }
+      title: article.title,
+      slug: article.slug,
+      description: article.description,
+      body: article.body,
+      createdAt: naive_datetime_to_iso_8601(article.inserted_at),
+      updatedAt: naive_datetime_to_iso_8601(article.updated_at),
+      favoritesCount: article.favourites_count
     }
   end
+
+  def render("show.json", %{article: article}) do
+    %{ article: render_one(article, ArticleView, "article.json")}
+  end
+
 
   def render("error.json", %{error: error}) do
     %{
       error: error
     }
   end
+
+  defp naive_datetime_to_iso_8601(datetime) do
+    datetime
+    |> Map.put(:microsecond, {elem(datetime.microsecond, 0), 3})
+    |> DateTime.from_naive!("Etc/UTC")
+    |> DateTime.to_iso8601()
+  end
+
 end
