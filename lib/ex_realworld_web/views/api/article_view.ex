@@ -2,6 +2,7 @@ defmodule ExRealworldWeb.Api.ArticleView do
   use ExRealworldWeb, :view
 
   alias ExRealworldWeb.Api.ArticleView
+  alias ExRealworldWeb.Api.UserView
 
   def render("articles.json", %{articles: articles}) do
     %{
@@ -18,7 +19,8 @@ defmodule ExRealworldWeb.Api.ArticleView do
       body: article.body,
       createdAt: naive_datetime_to_iso_8601(article.inserted_at),
       updatedAt: naive_datetime_to_iso_8601(article.updated_at),
-      favoritesCount: article.favourites_count
+      favoritesCount: article.favourites_count,
+      author: render_one(article.author, UserView, "user.json")
     }
   end
 

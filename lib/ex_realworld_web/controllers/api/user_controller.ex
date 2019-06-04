@@ -9,14 +9,14 @@ defmodule ExRealworldWeb.Api.UserController do
 
   def index(conn, _params) do
     user = conn.assigns[:current_user]
-    render(conn, "user.json", user: user)
+    render(conn, "show.json", user: user)
   end
 
   def create(conn, %{"user" => user_params}) do
     with {:ok, user} <- Accounts.create_user(user_params) do
       conn
       |> put_status(:created)
-      |> render("user.json", user: user)
+      |> render("show.json", user: user)
     end
   end
 
@@ -24,14 +24,14 @@ defmodule ExRealworldWeb.Api.UserController do
     user = Accounts.get_last_user
     conn
     |> put_status(:ok)
-    |> render("user.json", user: user)
+    |> render("show.json", user: user)
   end
 
   def update(conn, %{"user" => user_params}) do
     with {:ok, user} <- Accounts.update_user(conn.assigns[:current_user], user_params) do
       conn
       |> put_status(:ok)
-      |> render("user.json", user: user)
+      |> render("show.json", user: user)
     end
   end
 

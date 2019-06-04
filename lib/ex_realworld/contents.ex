@@ -18,7 +18,7 @@ defmodule ExRealworld.Contents do
 
   """
   def list_articles do
-    Repo.all(Article)
+    Repo.all(Article) |> Repo.preload(:author)
   end
 
   @doc """
@@ -35,7 +35,7 @@ defmodule ExRealworld.Contents do
       ** (Ecto.NoResultsError)
 
   """
-  def get_article!(id), do: Repo.get!(Article, id)
+  def get_article!(id), do: Repo.get!(Article, id) |> Repo.preload(:author)
 
   @doc """
   Creates a article.
