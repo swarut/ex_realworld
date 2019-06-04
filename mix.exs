@@ -45,7 +45,8 @@ defmodule ExRealworld.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:guardian, "~> 1.0"},
       {:comeonin, "~> 5.1"},
-      {:pbkdf2_elixir, "~> 1.0"}
+      {:pbkdf2_elixir, "~> 1.0"},
+      {:cortex, "~> 0.1", only: [:dev, :test]}
     ]
   end
 
