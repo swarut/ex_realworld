@@ -3,7 +3,7 @@ defmodule ExRealworldWeb.Api.ArticleController do
 
   alias ExRealworld.Contents
 
-  def index(conn, _params) do
+  def index(conn, params) do
     articles = Contents.list_articles
 
     conn
