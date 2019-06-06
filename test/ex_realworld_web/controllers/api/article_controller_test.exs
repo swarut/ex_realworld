@@ -4,6 +4,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   alias ExRealworld.Contents
   alias ExRealworld.Articles
   alias ExRealworld.Accounts
+  alias ExRealworld.Accounts.User
 
   @valid_article_attributes %{title: "A title", description: "Fire!", body: "Ore no uta o kike!"}
   @valid_user_attributes %{email: "email@email.com", password: "password"}
@@ -27,13 +28,13 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
 
   describe "list articles with author filter"do
     setup context do
-      # {:ok, user} = create_user()
-      # {:ok, article} = create_article(%{user_id: user.id})
-      # {:ok, %{user: user, article: article}}
-      create_article(context)
+      user = fixture(:user)
+      article = fixture(:article, user)
+
+      {:ok, [user: user, article: article]}
     end
 
-    test "returns most recent 20 artiles", %{conn: conn, article: article} do
+    test "returns most recent 20 artiles", %{conn: conn, article: article, user: user} do
       IO.puts("user --- #{inspect article}")
       # conn = get(conn, Routes.api_article_path(conn, :index, author: "aaa"))
       # assert %{"articles" => articles, "articlesCount" => 1} = json_response(conn, 200)
@@ -52,19 +53,19 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
 
   # end
 
-  def fixture(:article, params) do
-    {:ok, article} = Contents.create_article(Map.merge(@valid_article_attributes, params))
+  def fixture(:article, %User{id: id}) do
+    {:ok, article} = Contents.create_article(Map.merge(@valid_article_attributes, %{user_id: id}))
     article
-  end
-
-  def create_article(params) do
-    article = fixture(:article, params)
-    {:ok, article: article}
   end
 
   def fixture(:user) do
     {:ok, user} = Accounts.create_user(@valid_user_attributes)
     user
+  end
+
+  def create_article(_) do
+    article = fixture(:article)
+    {:ok, article: article}
   end
 
   def create_user(_) do
