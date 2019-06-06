@@ -1,20 +1,14 @@
 # ExRealworld
 
-To start your Phoenix server:
+This is the example Elixir/Phoenix project that implements Realworld app (https://github.com/gothinkster/realworld) specification.
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `cd assets && npm install`
-  * Start Phoenix endpoint with `mix phx.server`
+# Running
+- Copy `.env.example` then rename it to `.env`
+- Run `source .env` to load enviroment vars.
+- Run `mix deps.get`
+- Run `iex -S mix phx.server` to start the server.
+- Run `mix test` to run the test suite.
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
-
-## Learn more
-
-  * Official website: http://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+# Validating Realworld specification
+- Clone the original realworld app repo https://github.com/gothinkster/realworld.
+- From api folder within the repo, run `APIURL=http://localhost:4000/api ./run-api-tests.sh`
