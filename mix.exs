@@ -46,7 +46,8 @@ defmodule ExRealworld.MixProject do
       {:guardian, "~> 1.0"},
       {:comeonin, "~> 5.1"},
       {:pbkdf2_elixir, "~> 1.0"},
-      {:cortex, "~> 0.1", only: [:dev, :test]}
+      {:cortex, "~> 0.1", only: [:dev, :test]},
+      {:ex_machina, "~> 2.3", only: :test}
     ]
   end
 
