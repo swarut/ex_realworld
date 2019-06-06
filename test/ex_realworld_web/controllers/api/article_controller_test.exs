@@ -7,7 +7,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   alias ExRealworld.Accounts.User
 
   @valid_article_attributes %{title: "A title", description: "Fire!", body: "Ore no uta o kike!"}
-  @valid_user_attributes %{email: "email@email.com", password: "password"}
+  @valid_user_attributes %{email: "email@email.com", password: "password", username: "nekki_basara"}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -16,7 +16,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   # describe "list articles" do
   #   setup [:create_article]
 
-  #   test "returns most recent 20 artiles", %{conn: conn} do
+  #   test "returns most recent 20 articles", %{conn: conn} do
   #     conn = get(conn, Routes.api_article_path(conn, :index))
   #     assert %{"articles" => articles, "articlesCount" => 1} = json_response(conn, 200)
   #   end
@@ -27,17 +27,17 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   # end
 
   describe "list articles with author filter"do
-    setup context do
-      user = fixture(:user)
-      article = fixture(:article, user)
+    setup [:create_user_with_article]
 
-      {:ok, [user: user, article: article]}
-    end
-
-    test "returns most recent 20 artiles", %{conn: conn, article: article, user: user} do
-      IO.puts("user --- #{inspect article}")
-      # conn = get(conn, Routes.api_article_path(conn, :index, author: "aaa"))
-      # assert %{"articles" => articles, "articlesCount" => 1} = json_response(conn, 200)
+    test "returns most recent articles from the author", %{conn: conn, user: user} do
+      IO.puts("user --- #{inspect user}")
+      conn = get(conn, Routes.api_article_path(conn, :index, author: user.username))
+      assert %{"articles" => articles, "articlesCount" => 1} = json_response(conn, 200)
+      # Pin operator didn't work on remote function (user.username)
+      # https://stackoverflow.com/questions/34850121/why-forbidden-to-use-a-remote-function-inside-a-guard
+      # so we need to evaluate user.username first.
+      u = user.username
+      assert [%{"author" => %{"username" => ^u}}] = articles
     end
   end
 
@@ -71,6 +71,12 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   def create_user(_) do
     user = fixture(:user)
     {:ok, user: user}
+  end
+
+  def create_user_with_article(_) do
+    user = fixture(:user)
+    article = fixture(:article, user)
+    {:ok, [user: user, article: article]}
   end
 
 end
