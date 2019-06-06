@@ -13,14 +13,14 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
-  # describe "list articles" do
-  #   setup [:create_article]
+  describe "list articles" do
+    setup [:create_article]
 
-  #   test "returns most recent 20 articles", %{conn: conn} do
-  #     conn = get(conn, Routes.api_article_path(conn, :index))
-  #     assert %{"articles" => articles, "articlesCount" => 1} = json_response(conn, 200)
-  #   end
-  # end
+    test "returns most recent 20 articles", %{conn: conn} do
+      conn = get(conn, Routes.api_article_path(conn, :index))
+      assert %{"articles" => articles, "articlesCount" => 1} = json_response(conn, 200)
+    end
+  end
 
   # describe "list articles with tag filter" do
 
