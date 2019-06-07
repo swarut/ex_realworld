@@ -19,6 +19,8 @@ defmodule ExRealworldWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
+      import ExRealworld.Factory
+
       alias ExRealworldWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
