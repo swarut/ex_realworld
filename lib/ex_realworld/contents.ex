@@ -8,6 +8,8 @@ defmodule ExRealworld.Contents do
 
   alias ExRealworld.Contents.Article
 
+  @max_recent_articles 20
+
   @doc """
   Returns the list of articles.
 
@@ -20,6 +22,15 @@ defmodule ExRealworld.Contents do
   def list_articles do
     Repo.all(Article) |> Repo.preload(:author)
   end
+
+  @doc """
+  Get the most recent 20 articles
+  """
+  def list_recent_articles do
+    query = from a in Article, order_by: [desc: :id], limit: @max_recent_articles
+    Repo.all(query) |> Repo.preload(:author)
+  end
+
 
   @doc """
   Gets a single article.
