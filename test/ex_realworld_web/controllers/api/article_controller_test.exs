@@ -38,9 +38,14 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
 
   # end
 
-  # describe "list articles with limit option" do
+  describe "list articles with limit option" do
+    setup [:create_articles]
 
-  # end
+    test "returns specific number of articles", %{conn: conn} do
+      conn = get(conn, Routes.api_article_path(conn, :index, limit: 3))
+      assert %{"articles_count" => 3} = json_response(conn, 200)
+    end
+  end
 
   # describe "list articles with offset option" do
 

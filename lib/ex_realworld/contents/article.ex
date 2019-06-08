@@ -1,6 +1,9 @@
 defmodule ExRealworld.Contents.Article do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
+
+  alias ExRealworld.Contents.Article
 
   schema "articles" do
     field :body, :string
@@ -20,6 +23,18 @@ defmodule ExRealworld.Contents.Article do
     |> validate_required([:title, :description, :body])
     |> slugify
     |> unique_constraint(:slug)
+  end
+
+  def limit(query, lim) do
+    # query |> limit: ^lim
+  end
+
+  def recent(query) do
+    query |> order_by: [desc: :id]
+  end
+
+  def for_article() do
+    from a in Articles
   end
 
   defp slugify(changeset = %Ecto.Changeset{valid?: true, changes: %{title: title}}) do

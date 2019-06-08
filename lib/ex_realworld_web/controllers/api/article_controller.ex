@@ -4,7 +4,8 @@ defmodule ExRealworldWeb.Api.ArticleController do
   alias ExRealworld.Contents
 
   def index(conn, params) do
-    articles = Contents.list_recent_articles
+    limit = params["limit"]
+    articles = Contents.list_recent_articles(limit)
 
     conn
     |> render("articles.json", articles: articles)
