@@ -43,7 +43,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
 
     test "returns specific number of articles", %{conn: conn} do
       conn = get(conn, Routes.api_article_path(conn, :index, limit: 3))
-      assert %{"articles_count" => 3} = json_response(conn, 200)
+      assert %{"articlesCount" => 3} = json_response(conn, 200)
     end
   end
 

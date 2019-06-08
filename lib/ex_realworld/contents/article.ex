@@ -25,17 +25,13 @@ defmodule ExRealworld.Contents.Article do
     |> unique_constraint(:slug)
   end
 
-  def limit(query, lim) do
-    # query |> limit: ^lim
-  end
+  # def limit(query, lim) do
+  #   # query |> limit: ^lim
+  # end
 
-  def recent(query) do
-    query |> order_by: [desc: :id]
-  end
-
-  def for_article() do
-    from a in Articles
-  end
+  # def recent(query) do
+  #   query |> order_by: [desc: :id]
+  # end
 
   defp slugify(changeset = %Ecto.Changeset{valid?: true, changes: %{title: title}}) do
     title = title
