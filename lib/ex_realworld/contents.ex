@@ -31,10 +31,6 @@ defmodule ExRealworld.Contents do
     query = (from a in Article) |> Article.recent |> Article.limit(limit)
     Repo.all(query) |> Repo.preload(:author)
   end
-  # def list_recent_articles(limit) do
-  #   list_recent_articles |> r
-  # end
-
 
   @doc """
   Gets a single article.
