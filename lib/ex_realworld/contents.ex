@@ -28,8 +28,7 @@ defmodule ExRealworld.Contents do
   """
   def list_recent_articles(limit) do
     limit = limit || @max_recent_articles
-    query = from a in Article, order_by: [desc: :id], limit: ^limit
-    # query = Article.recent |> Article.limit(@max_recent_articles)
+    query = (from a in Article) |> Article.recent |> Article.limit(limit)
     Repo.all(query) |> Repo.preload(:author)
   end
   # def list_recent_articles(limit) do
