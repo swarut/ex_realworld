@@ -47,9 +47,14 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
     end
   end
 
-  # describe "list articles with offset option" do
+  describe "list articles with offset option" do
+    setup [:create_three_articles]
 
-  # end
+    test "returns articles with offset", %{conn: conn} do
+      conn = get(conn, Routes.api_article_path(conn, :index, offset: 1))
+      assert %{"articlesCount" => 2} = json_response(conn, 200)
+    end
+  end
 
   def create_user(_) do
     {:ok, user: insert(:user)}
@@ -61,6 +66,10 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
 
   def create_articles(_) do
     {:ok, articles: insert_list(30, :article)}
+  end
+
+  def create_three_articles(_) do
+    {:ok, articles: insert_list(3, :article)}
   end
 
   def create_article_with_user(_) do

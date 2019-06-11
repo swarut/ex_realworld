@@ -5,7 +5,8 @@ defmodule ExRealworldWeb.Api.ArticleController do
 
   def index(conn, params) do
     limit = params["limit"]
-    articles = Contents.list_recent_articles(limit)
+    offset = params["offset"]
+    articles = Contents.list_recent_articles(limit, offset)
 
     conn
     |> render("articles.json", articles: articles)
