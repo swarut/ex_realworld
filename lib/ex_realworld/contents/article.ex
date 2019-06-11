@@ -3,7 +3,8 @@ defmodule ExRealworld.Contents.Article do
   import Ecto.Changeset
   import Ecto.Query
 
-  alias ExRealworld.Contents.Article
+  alias ExRealworld.Contents.ArticleTag
+  alias ExRealworld.Contents.Tag
 
   schema "articles" do
     field :body, :string
@@ -12,6 +13,7 @@ defmodule ExRealworld.Contents.Article do
     field :slug, :string
     field :title, :string
     belongs_to :author, ExRealworld.Accounts.User, foreign_key: :user_id
+    many_to_many(:tag_list, Tag, join_through: ArticleTag)
 
     timestamps()
   end
