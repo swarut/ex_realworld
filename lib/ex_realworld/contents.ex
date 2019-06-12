@@ -20,7 +20,7 @@ defmodule ExRealworld.Contents do
 
   """
   def list_articles do
-    Repo.all(Article) |> Repo.preload(:author)
+    Repo.all(Article, preload: :author)
   end
 
   @doc """
@@ -30,6 +30,8 @@ defmodule ExRealworld.Contents do
     limit = limit || @max_recent_articles
     query = (from a in Article) |> Article.recent |> Article.limit(limit) |> Article.offset(offset)
     Repo.all(query) |> Repo.preload(:author)
+    # TODO: Investigate more why the below code doesn't work.
+    # Repo.all(query, preload: :author)
   end
 
   @doc """
