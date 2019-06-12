@@ -17,8 +17,8 @@ defmodule ExRealworldWeb.Api.Auth do
             {:ok, resource} = ExRealworldWeb.UserToken.resource_from_claims(claims)
             {:ok, user} = Accounts.authenticate_with_email_and_token(resource.email, token)
             conn |> assign(:current_user, user)
-          {:error, errors} ->
-            IO.puts("ERRORS----  = #{inspect errors}")
+          {:error, _errors} ->
+            # IO.puts("ERRORS----  = #{inspect errors}")
             conn
         end
     end
@@ -27,7 +27,6 @@ defmodule ExRealworldWeb.Api.Auth do
   def authenticate_user(conn, _opts) do
     case conn.assigns[:current_user] do
       nil ->
-        IO.puts("================ no current user ")
         conn
         |> put_status(:unauthorized)
         |> render("error.json", error: "unauthorized")
