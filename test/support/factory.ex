@@ -3,6 +3,7 @@ defmodule ExRealworld.Factory do
 
   alias ExRealworld.Accounts.User
   alias ExRealworld.Contents.Article
+  alias ExRealworld.Contents.Tag
 
   def user_factory do
     %User{
@@ -12,12 +13,19 @@ defmodule ExRealworld.Factory do
     }
   end
 
+  def tag_factory do
+    %Tag{
+      title: sequence(:title, &"tag-#{&1}")
+    }
+  end
+
   def article_factory do
     %Article{
       title: sequence(:titlem, &"A title #{&1}"),
       description: "Fire!",
       body: "Ore no uta o kike!",
-      author: build(:user)
+      author: build(:user),
+      tag_list: [build(:tag)]
     }
   end
 end

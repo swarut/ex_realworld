@@ -20,6 +20,7 @@ defmodule ExRealworldWeb.Api.ArticleView do
       createdAt: naive_datetime_to_iso_8601(article.inserted_at),
       updatedAt: naive_datetime_to_iso_8601(article.updated_at),
       favoritesCount: article.favourites_count,
+      tagList: article.tag_list |> Enum.map(fn(t) -> t.title end),
       author: render_one(article.author, UserView, "user.json")
     }
   end

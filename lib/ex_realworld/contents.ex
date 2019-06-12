@@ -26,12 +26,18 @@ defmodule ExRealworld.Contents do
   @doc """
   Get the most recent 20 articles
   """
-  def list_recent_articles(limit, offset) do
+  def list_recent_articles(tag, limit, offset) do
     limit = limit || @max_recent_articles
-    query = (from a in Article) |> Article.recent |> Article.limit(limit) |> Article.offset(offset)
-    Repo.all(query) |> Repo.preload(:author)
+
+    query = (from a in Article)
+    |> Article.with_tag(tag)
+    |> Article.recent
+    |> Article.limit(limit)
+    |> Article.offset(offset)
+
     # TODO: Investigate more why the below code doesn't work.
     # Repo.all(query, preload: :author)
+    Repo.all(query) |> Repo.preload([:author, :tag_list])
   end
 
   @doc """

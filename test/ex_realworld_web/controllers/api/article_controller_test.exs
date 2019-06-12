@@ -2,6 +2,8 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   use ExRealworldWeb.ConnCase
 
   alias ExRealworld.Contents
+  alias ExRealworld.Contents.Article
+  alias ExRealworld.Contents.Tag
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -16,9 +18,14 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
     end
   end
 
-  # describe "list articles with tag filter" do
+  describe "list articles with tag filter" do
+    setup [:create_articles_with_tag]
 
-  # end
+    test "return most recent articles that use a tag", %{conn: conn, tag: tag} do
+      conn = get(conn, Routes.api_article_path(conn, :index, tag: tag))
+      assert %{"articlesCount" => 1} = json_response(conn, 200)
+    end
+  end
 
   describe "list articles with author filter"do
     setup [:create_article_with_user]
@@ -76,6 +83,13 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
     insert_list(3, :article)
     user = insert(:user)
     {:ok, [user: user, article: insert(:article, author: user)]}
+  end
+
+  def create_articles_with_tag(_) do
+    insert_list(3, :article)
+    article = insert(:article)
+    %Article{tag_list: [%Tag{title: tag} | _]} = article
+    {:ok, tag: tag}
   end
 
 end

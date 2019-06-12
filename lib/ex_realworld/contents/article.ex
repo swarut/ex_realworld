@@ -31,6 +31,11 @@ defmodule ExRealworld.Contents.Article do
     from a in query, order_by: [desc: :id]
   end
 
+  def with_tag(query, nil), do: query
+  def with_tag(query, tag) do
+    from a in query, join: t in assoc(a, :tag_list), where: t.title == ^tag
+  end
+
   def limit(query, lim) do
     from a in query, limit: ^lim
   end
