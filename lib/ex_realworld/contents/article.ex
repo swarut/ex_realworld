@@ -12,7 +12,7 @@ defmodule ExRealworld.Contents.Article do
     field :favourites_count, :integer
     field :slug, :string
     field :title, :string
-    belongs_to :author, ExRealworld.Accounts.User, foreign_key: :user_id
+    belongs_to :author, ExRealworld.Contents.User, foreign_key: :user_id
     many_to_many(:tag_list, Tag, join_through: ArticleTag)
 
     timestamps()

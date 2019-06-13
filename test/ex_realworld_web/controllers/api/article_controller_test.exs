@@ -64,7 +64,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   end
 
   def create_user(_) do
-    {:ok, user: insert(:user)}
+    {:ok, user: insert(:contents_user)}
   end
 
   def create_article(_) do
@@ -81,7 +81,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
 
   def create_article_with_user(_) do
     insert_list(3, :article)
-    user = insert(:user)
+    user = insert(:contents_user)
     {:ok, [user: user, article: insert(:article, author: user)]}
   end
 

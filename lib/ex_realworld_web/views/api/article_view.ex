@@ -2,7 +2,7 @@ defmodule ExRealworldWeb.Api.ArticleView do
   use ExRealworldWeb, :view
 
   alias ExRealworldWeb.Api.ArticleView
-  alias ExRealworldWeb.Api.UserView
+  alias ExRealworldWeb.Api.ContentsUserView
 
   def render("articles.json", %{articles: articles}) do
     %{
@@ -21,7 +21,7 @@ defmodule ExRealworldWeb.Api.ArticleView do
       updatedAt: naive_datetime_to_iso_8601(article.updated_at),
       favoritesCount: article.favourites_count,
       tagList: article.tag_list |> Enum.map(fn(t) -> t.title end),
-      author: render_one(article.author, UserView, "user.json")
+      author: render_one(article.author, ContentsUserView, "user.json")
     }
   end
 
