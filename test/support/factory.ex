@@ -2,6 +2,7 @@ defmodule ExRealworld.Factory do
   use ExMachina.Ecto, repo: ExRealworld.Repo
 
   alias ExRealworld.Contents.Article
+  alias ExRealworld.Contents.Favourite
   alias ExRealworld.Contents.Tag
 
   def accounts_user_factory do
@@ -24,6 +25,13 @@ defmodule ExRealworld.Factory do
       title: sequence(:title, &"tag-#{&1}")
     }
   end
+
+  # def favourite_factory do
+  #   %Favourite {
+  #     user: build(:user),
+  #     article: build(:article)
+  #   }
+  # end
 
   def article_factory do
     %Article{
