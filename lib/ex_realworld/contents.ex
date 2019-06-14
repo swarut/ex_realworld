@@ -7,6 +7,8 @@ defmodule ExRealworld.Contents do
   alias ExRealworld.Repo
 
   alias ExRealworld.Contents.Article
+  alias ExRealworld.Contents.Favourite
+  alias ExRealworld.Contents.User
 
   @max_recent_articles 20
 
@@ -120,4 +122,12 @@ defmodule ExRealworld.Contents do
   def change_article(%Article{} = article) do
     Article.changeset(article, %{})
   end
+
+  def article_is_favourited_by?(%Article{} = article, %User{} = user) do
+    article_is_favourited_by?(article.id, user.id)
+  end
+  def article_is_favourited_by?(article_id, user_id) when is_number(article_id) and is_number(user_id) do
+    Repo.get_by(Favourite, [article_id: article_id, user_id: user_id])
+  end
+
 end
