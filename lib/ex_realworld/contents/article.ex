@@ -6,6 +6,7 @@ defmodule ExRealworld.Contents.Article do
   alias ExRealworld.Contents.ArticleTag
   alias ExRealworld.Contents.Favourite
   alias ExRealworld.Contents.Tag
+  alias ExRealworld.Contents.User
 
   schema "articles" do
     field :body, :string
@@ -15,7 +16,7 @@ defmodule ExRealworld.Contents.Article do
     field :title, :string
 
     belongs_to :author, ExRealworld.Contents.User, foreign_key: :user_id
-    has_many :favourites, Favourite
+    many_to_many :favourite_by, User, join_through: Favourite
     many_to_many :tag_list, Tag, join_through: ArticleTag
 
     timestamps()

@@ -26,12 +26,12 @@ defmodule ExRealworld.Factory do
     }
   end
 
-  # def favourite_factory do
-  #   %Favourite {
-  #     user: build(:user),
-  #     article: build(:article)
-  #   }
-  # end
+  def favourite_factory do
+    %Favourite {
+      user: build(:user),
+      article: build(:article)
+    }
+  end
 
   def article_factory do
     %Article{
@@ -39,7 +39,8 @@ defmodule ExRealworld.Factory do
       description: "Fire!",
       body: "Ore no uta o kike!",
       author: build(:contents_user),
-      tag_list: [build(:tag)]
+      tag_list: [build(:tag)],
+      favourite_by: [build(:contents_user)]
     }
   end
 end

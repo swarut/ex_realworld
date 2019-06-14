@@ -37,7 +37,7 @@ defmodule ExRealworld.Contents do
 
     # TODO: Investigate more why the below code doesn't work.
     # Repo.all(query, preload: :author)
-    Repo.all(query) |> Repo.preload([:author, :tag_list])
+    Repo.all(query) |> Repo.preload([:author, :tag_list, :favourite_by])
   end
 
   @doc """
@@ -54,7 +54,7 @@ defmodule ExRealworld.Contents do
       ** (Ecto.NoResultsError)
 
   """
-  def get_article!(id), do: Repo.get!(Article, id) |> Repo.preload(:author)
+  def get_article!(id), do: Repo.get!(Article, id) |> Repo.preload([:author, :tag_list, :favourite_by])
 
   @doc """
   Creates a article.
