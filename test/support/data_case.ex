@@ -22,6 +22,8 @@ defmodule ExRealworld.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import ExRealworld.DataCase
+
+      import ExRealworld.Factory
     end
   end
 
