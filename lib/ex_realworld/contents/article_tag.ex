@@ -6,10 +6,8 @@ defmodule ExRealworld.Contents.ArticleTag do
   alias ExRealworld.Contents.Tag
 
   schema "articles_tags" do
-    field :article_id, :id
-    field :tag_id, :id
-    belongs_to(:articles, Article)
-    belongs_to(:tags, Tag)
+    belongs_to(:article, Article)
+    belongs_to(:tag, Tag)
 
     timestamps()
   end
