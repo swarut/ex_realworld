@@ -40,7 +40,7 @@ defmodule ExRealworld.Factory do
       body: "Ore no uta o kike!",
       author: build(:contents_user),
       tag_list: [build(:tag)],
-      favourite_by: [build(:contents_user)]
+      favourited_by: [build(:contents_user)]
     }
   end
 end

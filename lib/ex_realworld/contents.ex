@@ -39,7 +39,7 @@ defmodule ExRealworld.Contents do
 
     # TODO: Investigate more why the below code doesn't work.
     # Repo.all(query, preload: :author)
-    Repo.all(query) |> Repo.preload([:author, :tag_list, :favourite_by])
+    Repo.all(query) |> Repo.preload([:author, :tag_list, :favourited_by])
   end
 
   @doc """
@@ -56,7 +56,7 @@ defmodule ExRealworld.Contents do
       ** (Ecto.NoResultsError)
 
   """
-  def get_article!(id), do: Repo.get!(Article, id) |> Repo.preload([:author, :tag_list, :favourite_by])
+  def get_article!(id), do: Repo.get!(Article, id) |> Repo.preload([:author, :tag_list, :favourited_by])
 
   @doc """
   Creates a article.
@@ -123,14 +123,14 @@ defmodule ExRealworld.Contents do
     Article.changeset(article, %{})
   end
 
-  def article_is_favourited_by?(%Article{} = article, %User{} = user) do
-    article_is_favourited_by?(article.id, user.id)
-  end
-  def article_is_favourited_by?(article_id, user_id) when is_number(article_id) and is_number(user_id) do
-    case Repo.get_by(Favourite, [article_id: article_id, user_id: user_id]) do
-      %Favourite{} -> true
-      [] -> false
-    end
+  def articles_with_is_favourited_flag(articles, user) do
+    articles |> Enum.map(fn(article) ->
+      is_favourited = article.favourited_by
+      |> Enum.map(fn(fav) -> fav.user_id end)
+      |> Enum.member?(user.id)
+
+      Map.put(article, :is_favourited, is_favourited)
+    end)
   end
 
 end

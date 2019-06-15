@@ -22,14 +22,13 @@ defmodule ExRealworldWeb.Api.ArticleView do
       favoritesCount: article.favourites_count,
       tagList: article.tag_list |> Enum.map(fn(t) -> t.title end),
       author: render_one(article.author, ContentsUserView, "user.json"),
-      favourite_by: render_many(article.favourite_by, ContentsUserView, "user.json")
+      favourited_by: render_many(article.favourited_by, ContentsUserView, "user.json")
     }
   end
 
   def render("show.json", %{article: article}) do
     %{ article: render_one(article, ArticleView, "article.json")}
   end
-
 
   def render("error.json", %{error: error}) do
     %{
