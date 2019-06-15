@@ -20,7 +20,8 @@ defmodule ExRealworld.ContentsTest do
     end
 
     def create_article(_) do
-      {:ok, article: insert(:article)}
+      user = insert(:contents_user)
+      {:ok, [article: insert(:article, favourite_by: [user]), user: user]}
     end
 
     setup [:create_article]
@@ -67,6 +68,10 @@ defmodule ExRealworld.ContentsTest do
 
     test "change_article/1 returns a article changeset", %{article: article} do
       assert %Ecto.Changeset{} = Contents.change_article(article)
+    end
+
+    test "article_is_favourited_by? returns boolean", %{article: article, user: user} do
+      assert Contents.article_is_favourited_by?(article, user) == true
     end
 
   end

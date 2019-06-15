@@ -127,7 +127,10 @@ defmodule ExRealworld.Contents do
     article_is_favourited_by?(article.id, user.id)
   end
   def article_is_favourited_by?(article_id, user_id) when is_number(article_id) and is_number(user_id) do
-    Repo.get_by(Favourite, [article_id: article_id, user_id: user_id])
+    case Repo.get_by(Favourite, [article_id: article_id, user_id: user_id]) do
+      %Favourite{} -> true
+      [] -> false
+    end
   end
 
 end
