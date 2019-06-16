@@ -18,6 +18,14 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
     end
   end
 
+  describe "list articles with authentication" do
+    setup [:create_articles]
+
+    test "returns most recent 20 articles with is_favourited flag" do
+
+    end
+  end
+
   describe "list articles with tag filter" do
     setup [:create_articles_with_tag]
 
