@@ -22,7 +22,8 @@ defmodule ExRealworldWeb.Api.ArticleView do
       favoritesCount: article.favourites_count,
       tagList: article.tag_list |> Enum.map(fn(t) -> t.title end),
       author: render_one(article.author, ContentsUserView, "user.json"),
-      favourited_by: render_many(article.favourited_by, ContentsUserView, "user.json")
+      favourited_by: render_many(article.favourited_by, ContentsUserView, "user.json"),
+      is_favourited: article.is_favourited
     }
   end
 

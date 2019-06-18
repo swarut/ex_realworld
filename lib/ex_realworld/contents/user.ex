@@ -1,5 +1,4 @@
 defmodule ExRealworld.Contents.User do
-  import Ecto.Changeset
 
   alias ExRealworld.Contents.Favourite
 
@@ -9,6 +8,9 @@ defmodule ExRealworld.Contents.User do
     field :email, :string
     field :image, :string
     field :username, :string
+
+    # Just for testing purpose.
+    field :token, :string
 
     has_many :favourites, Favourite
 

@@ -4,6 +4,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   alias ExRealworld.Contents
   alias ExRealworld.Contents.Article
   alias ExRealworld.Contents.Tag
+  alias ExRealworld.Contents.User
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -19,10 +20,13 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   end
 
   describe "list articles with authentication" do
-    setup [:create_articles]
+    setup [:create_articles_with_is_favourited]
 
-    test "returns most recent 20 articles with is_favourited flag" do
-
+    test "returns most recent 20 articles with is_favourited flag", %{conn: conn, user: user, article: _article} do
+      conn = conn |> put_req_header("authorization", "Token " <> user.token)
+      authorized_conn = get(conn, Routes.api_article_path(conn, :index))
+      assert %{"articles" => articles} = json_response(authorized_conn, 200)
+      assert [%{"is_favourited" => true}] = articles
     end
   end
 
@@ -98,6 +102,12 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
     article = insert(:article)
     %Article{tag_list: [%Tag{title: tag} | _]} = article
     {:ok, tag: tag}
+  end
+
+  def create_articles_with_is_favourited(_) do
+    user = insert(:contents_user, token: "token")
+    article = insert(:article, favourited_by: [user])
+    {:ok, [user: user, article: article]}
   end
 
 end
