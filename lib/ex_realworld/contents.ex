@@ -126,7 +126,7 @@ defmodule ExRealworld.Contents do
   def articles_with_is_favourited_flag(articles, user) do
     articles |> Enum.map(fn(article) ->
       is_favourited = article.favourited_by
-      |> Enum.map(fn(fav) -> fav.user_id end)
+      |> Enum.map(fn(user) -> user.id end)
       |> Enum.member?(user.id)
 
       Map.put(article, :is_favourited, is_favourited)

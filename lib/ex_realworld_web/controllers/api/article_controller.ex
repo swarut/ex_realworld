@@ -10,10 +10,8 @@ defmodule ExRealworldWeb.Api.ArticleController do
     user = conn.assigns[:current_user]
     articles =  case user do
       nil ->
-        IO.puts("--------no user")
         Contents.list_recent_articles(tag, limit, offset)
       user ->
-        IO.puts("--------with user")
         Contents.list_recent_articles(tag, limit, offset)
         |> Contents.articles_with_is_favourited_flag(user)
     end

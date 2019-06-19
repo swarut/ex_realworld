@@ -105,7 +105,8 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   end
 
   def create_articles_with_is_favourited(_) do
-    user = insert(:contents_user, token: "token")
+    {:ok, user} = ExRealworld.Accounts.create_user(%{email: "email@email.com", password: "password"})
+    user = ExRealworld.Repo.get(User, user.id)
     article = insert(:article, favourited_by: [user])
     {:ok, [user: user, article: article]}
   end
