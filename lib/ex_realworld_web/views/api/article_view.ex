@@ -19,11 +19,11 @@ defmodule ExRealworldWeb.Api.ArticleView do
       body: article.body,
       createdAt: naive_datetime_to_iso_8601(article.inserted_at),
       updatedAt: naive_datetime_to_iso_8601(article.updated_at),
-      favoritesCount: article.favourites_count,
+      favoritesCount: length(article.favourited_by),
       tagList: article.tag_list |> Enum.map(fn(t) -> t.title end),
       author: render_one(article.author, ContentsUserView, "user.json"),
       favourited_by: render_many(article.favourited_by, ContentsUserView, "user.json"),
-      is_favourited: article.is_favourited
+      favorited: article.is_favourited
     }
   end
 
