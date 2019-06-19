@@ -4,7 +4,9 @@ defmodule ExRealworld.Contents.Article do
   import Ecto.Query
 
   alias ExRealworld.Contents.ArticleTag
+  alias ExRealworld.Contents.Favourite
   alias ExRealworld.Contents.Tag
+  alias ExRealworld.Contents.User
 
   schema "articles" do
     field :body, :string
@@ -12,8 +14,11 @@ defmodule ExRealworld.Contents.Article do
     field :favourites_count, :integer
     field :slug, :string
     field :title, :string
-    belongs_to :author, ExRealworld.Accounts.User, foreign_key: :user_id
-    many_to_many(:tag_list, Tag, join_through: ArticleTag)
+    field :is_favourited, :boolean, virtual: true, default: false
+
+    belongs_to :author, ExRealworld.Contents.User, foreign_key: :user_id
+    many_to_many :favourited_by, User, join_through: Favourite, on_delete: :delete_all
+    many_to_many :tag_list, Tag, join_through: ArticleTag, on_delete: :delete_all
 
     timestamps()
   end

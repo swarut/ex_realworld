@@ -19,13 +19,18 @@ defmodule ExRealworld.ContentsTest do
       article
     end
 
-    test "list_articles/0 returns all articles" do
-      article = article_fixture()
+    def create_article(_) do
+      user = insert(:contents_user)
+      {:ok, [article: insert(:article, favourited_by: [user]), user: user]}
+    end
+
+    setup [:create_article]
+
+    test "list_articles/0 returns all articles", %{article: article} do
       assert Enum.map(Contents.list_articles(), fn(article) -> article.id end) == [article.id]
     end
 
-    test "get_article!/1 returns the article with given id" do
-      article = article_fixture()
+    test "get_article!/1 returns the article with given id", %{article: article} do
       assert Contents.get_article!(article.id).id == article.id
     end
 
@@ -42,8 +47,7 @@ defmodule ExRealworld.ContentsTest do
       assert {:error, %Ecto.Changeset{}} = Contents.create_article(@invalid_attrs)
     end
 
-    test "update_article/2 with valid data updates the article" do
-      article = article_fixture()
+    test "update_article/2 with valid data updates the article", %{article: article} do
       assert {:ok, %Article{} = article} = Contents.update_article(article, @update_attrs)
       assert article.body == "some updated body"
       assert article.description == "some updated description"
@@ -52,21 +56,19 @@ defmodule ExRealworld.ContentsTest do
       assert article.title == "some updated title"
     end
 
-    test "update_article/2 with invalid data returns error changeset" do
-      article = article_fixture()
+    test "update_article/2 with invalid data returns error changeset", %{article: article} do
       assert {:error, %Ecto.Changeset{}} = Contents.update_article(article, @invalid_attrs)
       assert article.id == Contents.get_article!(article.id).id
     end
 
-    test "delete_article/1 deletes the article" do
-      article = article_fixture()
+    test "delete_article/1 deletes the article", %{article: article} do
       assert {:ok, %Article{}} = Contents.delete_article(article)
       assert_raise Ecto.NoResultsError, fn -> Contents.get_article!(article.id) end
     end
 
-    test "change_article/1 returns a article changeset" do
-      article = article_fixture()
+    test "change_article/1 returns a article changeset", %{article: article} do
       assert %Ecto.Changeset{} = Contents.change_article(article)
     end
+
   end
 end

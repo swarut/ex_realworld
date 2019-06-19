@@ -7,6 +7,8 @@ defmodule ExRealworld.Contents do
   alias ExRealworld.Repo
 
   alias ExRealworld.Contents.Article
+  alias ExRealworld.Contents.Favourite
+  alias ExRealworld.Contents.User
 
   @max_recent_articles 20
 
@@ -37,7 +39,7 @@ defmodule ExRealworld.Contents do
 
     # TODO: Investigate more why the below code doesn't work.
     # Repo.all(query, preload: :author)
-    Repo.all(query) |> Repo.preload([:author, :tag_list])
+    Repo.all(query) |> Repo.preload([:author, :tag_list, :favourited_by])
   end
 
   @doc """
@@ -54,7 +56,7 @@ defmodule ExRealworld.Contents do
       ** (Ecto.NoResultsError)
 
   """
-  def get_article!(id), do: Repo.get!(Article, id) |> Repo.preload(:author)
+  def get_article!(id), do: Repo.get!(Article, id) |> Repo.preload([:author, :tag_list, :favourited_by])
 
   @doc """
   Creates a article.
@@ -120,4 +122,15 @@ defmodule ExRealworld.Contents do
   def change_article(%Article{} = article) do
     Article.changeset(article, %{})
   end
+
+  def articles_with_is_favourited_flag(articles, user) do
+    articles |> Enum.map(fn(article) ->
+      is_favourited = article.favourited_by
+      |> Enum.map(fn(user) -> user.id end)
+      |> Enum.member?(user.id)
+
+      Map.put(article, :is_favourited, is_favourited)
+    end)
+  end
+
 end

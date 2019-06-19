@@ -4,6 +4,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   alias ExRealworld.Contents
   alias ExRealworld.Contents.Article
   alias ExRealworld.Contents.Tag
+  alias ExRealworld.Contents.User
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -15,6 +16,17 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
     test "returns most recent 20 articles", %{conn: conn} do
       conn = get(conn, Routes.api_article_path(conn, :index))
       assert %{"articles" => articles, "articlesCount" => 20} = json_response(conn, 200)
+    end
+  end
+
+  describe "list articles with authentication" do
+    setup [:create_articles_with_is_favourited]
+
+    test "returns most recent 20 articles with is_favourited flag", %{conn: conn, user: user, article: _article} do
+      conn = conn |> put_req_header("authorization", "Token " <> user.token)
+      authorized_conn = get(conn, Routes.api_article_path(conn, :index))
+      assert %{"articles" => articles} = json_response(authorized_conn, 200)
+      assert [%{"is_favourited" => true}] = articles
     end
   end
 
@@ -64,7 +76,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   end
 
   def create_user(_) do
-    {:ok, user: insert(:user)}
+    {:ok, user: insert(:contents_user)}
   end
 
   def create_article(_) do
@@ -81,7 +93,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
 
   def create_article_with_user(_) do
     insert_list(3, :article)
-    user = insert(:user)
+    user = insert(:contents_user)
     {:ok, [user: user, article: insert(:article, author: user)]}
   end
 
@@ -90,6 +102,13 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
     article = insert(:article)
     %Article{tag_list: [%Tag{title: tag} | _]} = article
     {:ok, tag: tag}
+  end
+
+  def create_articles_with_is_favourited(_) do
+    {:ok, user} = ExRealworld.Accounts.create_user(%{email: "email@email.com", password: "password"})
+    user = ExRealworld.Repo.get(User, user.id)
+    article = insert(:article, favourited_by: [user])
+    {:ok, [user: user, article: article]}
   end
 
 end

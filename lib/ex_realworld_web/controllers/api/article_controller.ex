@@ -7,9 +7,16 @@ defmodule ExRealworldWeb.Api.ArticleController do
     limit = params["limit"]
     offset = params["offset"]
     tag = params["tag"]
-    articles = Contents.list_recent_articles(tag, limit, offset)
+    user = conn.assigns[:current_user]
+    articles =  case user do
+      nil ->
+        Contents.list_recent_articles(tag, limit, offset)
+      user ->
+        Contents.list_recent_articles(tag, limit, offset)
+        |> Contents.articles_with_is_favourited_flag(user)
+    end
 
     conn
-    |> render("articles.json", articles: articles)
+    |> render("articles.json", %{articles: articles})
   end
 end

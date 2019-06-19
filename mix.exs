@@ -47,7 +47,8 @@ defmodule ExRealworld.MixProject do
       {:comeonin, "~> 5.1"},
       {:pbkdf2_elixir, "~> 1.0"},
       {:cortex, "~> 0.1", only: [:dev, :test]},
-      {:ex_machina, "~> 2.3", only: :test}
+      {:ex_machina, "~> 2.3", only: :test},
+      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
     ]
   end
 
