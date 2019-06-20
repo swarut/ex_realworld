@@ -28,11 +28,12 @@ defmodule ExRealworld.Contents do
   @doc """
   Get the most recent 20 articles
   """
-  def list_recent_articles(tag, limit, offset) do
+  def list_recent_articles(tag, favourited_by, limit, offset) do
     limit = limit || @max_recent_articles
 
     query = (from a in Article)
     |> Article.with_tag(tag)
+    |> Article.with_favourited_by(favourited_by)
     |> Article.recent
     |> Article.limit(limit)
     |> Article.offset(offset)

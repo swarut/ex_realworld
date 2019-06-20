@@ -22,7 +22,11 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   describe "list articles with authentication" do
     setup [:create_articles_with_is_favourited]
 
-    test "returns most recent 20 articles with is_favourited flag", %{conn: conn, user: user, article: _article} do
+    test "returns most recent articles with favorited flag", %{
+      conn: conn,
+      user: user,
+      article: _article
+    } do
       conn = conn |> put_req_header("authorization", "Token " <> user.token)
       authorized_conn = get(conn, Routes.api_article_path(conn, :index))
       assert %{"articles" => articles} = json_response(authorized_conn, 200)
@@ -39,7 +43,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
     end
   end
 
-  describe "list articles with author filter"do
+  describe "list articles with author filter" do
     setup [:create_article_with_user]
 
     test "returns most recent articles from the author", %{conn: conn, user: user} do
@@ -48,14 +52,26 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
       # Pin operator didn't work on remote function (user.username)
       # https://stackoverflow.com/questions/34850121/why-forbidden-to-use-a-remote-function-inside-a-guard
       # so we need to evaluate user.username first.
-      u = user.username
-      assert [%{"author" => %{"username" => ^u}} | _] = articles
+      username = user.username
+      assert [%{"author" => %{"username" => ^username}} | _] = articles
     end
   end
 
-  # describe "list articles with favourited filter" do
+  describe "list articles with favourited filter" do
+    setup [:create_articles_with_is_favourited]
 
-  # end
+    test "returns most recent articles favorited by specific user", %{conn: conn, user: user} do
+      conn = get(conn, Routes.api_article_path(conn, :index, favorited: user.username))
+      assert %{"articles" => articles} = json_response(conn, 200)
+      username = user.username
+      assert [%{"favourited_by" => [%{"username" => ^username} | _]}] = articles
+    end
+
+    test "returns nothing if specific user has no favourite", %{conn: conn, user: user} do
+      conn = get(conn, Routes.api_article_path(conn, :index, favorited: "someoneelse"))
+      assert %{"articles" => []} = json_response(conn, 200)
+    end
+  end
 
   describe "list articles with limit option" do
     setup [:create_articles]
@@ -105,10 +121,15 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   end
 
   def create_articles_with_is_favourited(_) do
-    {:ok, user} = ExRealworld.Accounts.create_user(%{email: "email@email.com", password: "password"})
+    {:ok, user} =
+      ExRealworld.Accounts.create_user(%{
+        username: "username",
+        email: "email@email.com",
+        password: "password"
+      })
+
     user = ExRealworld.Repo.get(User, user.id)
     article = insert(:article, favourited_by: [user])
     {:ok, [user: user, article: article]}
   end
-
 end

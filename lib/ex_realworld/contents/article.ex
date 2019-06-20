@@ -41,6 +41,11 @@ defmodule ExRealworld.Contents.Article do
     from a in query, join: t in assoc(a, :tag_list), where: t.title == ^tag
   end
 
+  def with_favourited_by(query, nil), do: query
+  def with_favourited_by(query, author) do
+    from a in query, join: f in assoc(a, :favourited_by), join: u in User, where: u.username == ^author
+  end
+
   def limit(query, lim) do
     from a in query, limit: ^lim
   end
