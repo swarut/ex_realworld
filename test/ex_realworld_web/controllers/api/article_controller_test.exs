@@ -26,7 +26,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
       conn = conn |> put_req_header("authorization", "Token " <> user.token)
       authorized_conn = get(conn, Routes.api_article_path(conn, :index))
       assert %{"articles" => articles} = json_response(authorized_conn, 200)
-      assert [%{"is_favourited" => true}] = articles
+      assert [%{"favorited" => true}] = articles
     end
   end
 
