@@ -19,4 +19,10 @@ defmodule ExRealworldWeb.Api.ArticleController do
     conn
     |> render("articles.json", %{articles: articles})
   end
+
+  def create(conn, params) do
+    article = Contents.get_article!(1)
+    conn
+    |> render("show.json", %{article: article})
+  end
 end
