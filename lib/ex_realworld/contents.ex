@@ -72,9 +72,14 @@ defmodule ExRealworld.Contents do
 
   """
   def create_article(attrs \\ %{}) do
-    %Article{}
+    article = %Article{}
     |> Article.changeset(attrs)
     |> Repo.insert()
+
+    case article do
+      {:ok, article} -> {:ok, article |> Repo.preload([:author, :tag_list, :favourited_by])}
+      {:error, changeset} -> {:error, changeset}
+    end
   end
 
   @doc """

@@ -26,10 +26,7 @@ defmodule ExRealworldWeb.Api.ArticleController do
   end
 
   def create(conn, params) do
-    article =
-      with {:ok, article} <- Contents.create_article(params["article"]) do
-        article |> ExRealworld.Repo.preload([:author, :tag_list, :favourited_by])
-      end
+    {:ok, article} = Contents.create_article(params["article"])
 
     conn
     |> render("show.json", %{article: article})

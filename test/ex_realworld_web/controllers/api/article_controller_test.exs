@@ -92,9 +92,15 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
 
   describe "create article" do
     test "add new article and return it", %{conn: conn} do
-      conn = post(conn, Routes.api_article_path(conn, :create), article: %{title: "a", description: "b", body: "c"})
+      {title, description, body} = {"title", "description", "body"}
+
+      conn =
+        post(conn, Routes.api_article_path(conn, :create),
+          article: %{title: title, description: description, body: body}
+        )
+
       assert %{"article" => article} = json_response(conn, 200)
-      assert article["title"] == "a"
+      assert article["title"] == title
     end
   end
 
