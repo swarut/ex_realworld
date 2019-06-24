@@ -1,7 +1,6 @@
 defmodule ExRealworldWeb.Api.ArticleControllerTest do
   use ExRealworldWeb.ConnCase
 
-  alias ExRealworld.Contents
   alias ExRealworld.Contents.Article
   alias ExRealworld.Contents.Tag
   alias ExRealworld.Contents.User
@@ -67,7 +66,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
       assert [%{"favourited_by" => [%{"username" => ^username} | _]}] = articles
     end
 
-    test "returns nothing if specific user has no favourite", %{conn: conn, user: user} do
+    test "returns nothing if specific user has no favourite", %{conn: conn} do
       conn = get(conn, Routes.api_article_path(conn, :index, favorited: "someoneelse"))
       assert %{"articles" => []} = json_response(conn, 200)
     end
@@ -88,6 +87,14 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
     test "returns articles with offset", %{conn: conn} do
       conn = get(conn, Routes.api_article_path(conn, :index, offset: 1))
       assert %{"articlesCount" => 2} = json_response(conn, 200)
+    end
+  end
+
+  describe "create article" do
+    test "add new article and return it", %{conn: conn} do
+      conn = post(conn, Routes.api_article_path(conn, :create), article: %{title: "a", description: "b", body: "c"})
+      assert %{"article" => article} = json_response(conn, 200)
+      assert article["title"] == "a"
     end
   end
 
