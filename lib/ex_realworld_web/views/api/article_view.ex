@@ -11,6 +11,9 @@ defmodule ExRealworldWeb.Api.ArticleView do
     }
   end
 
+  # NOTE: this view function depends on the article to be preloaded with favourited_by
+  # association. Let's figure out how to make it independent so that it can be called
+  # even the article is not preloaded.
   def render("article.json", %{article: article}) do
     %{
       title: article.title,
