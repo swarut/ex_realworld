@@ -29,7 +29,7 @@ defmodule ExRealworld.Contents.Article do
     |> cast(attrs, [:title, :description, :body, :favourites_count, :user_id])
     |> validate_required([:title, :description, :body])
     |> slugify
-    |> unique_constraint(:slug)
+    #|> unique_constraint(:slug)  # Removed as not required by spec.
   end
 
   def recent(query) do

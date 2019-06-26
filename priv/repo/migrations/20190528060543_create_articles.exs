@@ -13,7 +13,7 @@ defmodule ExRealworld.Repo.Migrations.CreateArticles do
       timestamps()
     end
 
-    create unique_index(:articles, [:slug])
+    # create unique_index(:articles, [:slug]) # Removed as not required by spec.
     create index(:articles, [:user_id])
   end
 end
