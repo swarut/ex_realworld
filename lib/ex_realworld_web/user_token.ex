@@ -20,7 +20,3 @@ defmodule ExRealworldWeb.UserToken do
   end
 
 end
-
-# r = %{id: 1, user: %{name: "pp"}}
-# {:ok, token, claims} = ExRealworld.Guardian.encode_and_sign(r)
-
