@@ -34,7 +34,6 @@ defmodule ExRealworldWeb.Api.ArticleController do
 
   def show(conn, params) do
     slug = params["slug"]
-    IO.puts "----------------------------slug #{slug}"
     article = Contents.get_article_by_slug(slug)
 
     conn

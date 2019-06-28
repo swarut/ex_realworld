@@ -35,12 +35,13 @@ defmodule ExRealworld.Factory do
 
   def article_factory do
     %Article{
-      title: sequence(:titlem, &"A title #{&1}"),
+      title: sequence(:title, &"A title #{&1}"),
       description: "Fire!",
       body: "Ore no uta o kike!",
       author: build(:contents_user),
       tag_list: [build(:tag)],
-      favourited_by: [build(:contents_user)]
+      favourited_by: [build(:contents_user)],
+      slug: sequence(:slug, &"A slug #{&1}"),
     }
   end
 end

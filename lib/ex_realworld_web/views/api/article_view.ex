@@ -16,6 +16,7 @@ defmodule ExRealworldWeb.Api.ArticleView do
   # even the article is not preloaded.
   def render("article.json", %{article: article}) do
     %{
+      id: article.id,
       title: article.title,
       slug: article.slug,
       description: article.description,
