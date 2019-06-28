@@ -31,4 +31,13 @@ defmodule ExRealworldWeb.Api.ArticleController do
     conn
     |> render("show.json", %{article: article})
   end
+
+  def show(conn, params) do
+    slug = params["slug"]
+    IO.puts "----------------------------slug #{slug}"
+    article = Contents.get_article_by_slug(slug)
+
+    conn
+    |> render("show.json", %{article: article})
+  end
 end

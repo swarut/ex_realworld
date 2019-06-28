@@ -59,6 +59,8 @@ defmodule ExRealworld.Contents do
   """
   def get_article!(id), do: Repo.get!(Article, id) |> Repo.preload([:author, :tag_list, :favourited_by])
 
+  def get_article_by_slug(slug), do: Repo.get_by(Article, slug: slug) |> Repo.preload([:author, :tag_list, :favourited_by])
+
   @doc """
   Creates a article.
 

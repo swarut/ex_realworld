@@ -90,6 +90,16 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
     end
   end
 
+  describe "get article by slug" do
+    setup [:create_article]
+
+    test "returns article with specific slug", %{conn: conn, article: article} do
+      IO.puts "-------------------article #{inspect article}"
+      conn = get(conn, Routes.api_article_path(conn, :show, article.slug))
+      assert %{article: article} = json_response(conn, 200)
+    end
+  end
+
   describe "create article" do
     test "add new article and return it", %{conn: conn} do
       {title, description, body} = {"title", "description", "body"}
