@@ -114,6 +114,14 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
     end
   end
 
+  # TODO: need to implement follow first
+  # describe "feed" do
+  #   setup [:create_articles_by_followed_user]
+  #   test "list article from followed users", %{conn: conn} do
+
+  #   end
+  # end
+
   def create_user(_) do
     {:ok, user: insert(:contents_user)}
   end
