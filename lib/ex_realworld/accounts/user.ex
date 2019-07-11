@@ -2,6 +2,10 @@ defmodule ExRealworld.Accounts.User do
   import Ecto.Changeset
 
   use Ecto.Schema
+
+  alias ExRealworld.Accounts.User
+  alias ExRealworld.Accounts.Follow
+
   schema "users" do
     field :bio, :string
     field :email, :string
@@ -10,6 +14,9 @@ defmodule ExRealworld.Accounts.User do
     field :username, :string
     field :encrypted_password, :string
     field :password, :string, virtual: true
+
+    many_to_many(:followed, User, join_through: Follow, join_keys: [follower_id: :id, followed_id: :id])
+    many_to_many(:followers, User, join_through: Follow, join_keys: [followed_id: :id, follower_id: :id])
 
     timestamps()
   end
