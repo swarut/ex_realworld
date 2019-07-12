@@ -23,6 +23,8 @@ defmodule ExRealworldWeb.Router do
     get "/user", UserController, :index
     put "/user", UserController, :update
 
+    resources "/profiles", ProfileController, only: [:show]
+
     get "/articles", ArticleController, :index
     get "/articles/:slug", ArticleController, :show
     get "/articles/feed", ArticleController, :feed
