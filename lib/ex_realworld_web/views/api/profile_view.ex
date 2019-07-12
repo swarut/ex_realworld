@@ -13,7 +13,14 @@ defmodule ExRealworldWeb.Api.ProfileView do
 
   def render("show.json", %{user: user}) do
     %{
-      profile: render_one(user, ProfileView, "profile.json")
+      # The below expression is not working as it assume data key to be :profile
+      # profile: render_one(user, ProfileView, "profile.json")
+      # To make it works, there are two options
+      # * Explicitly specify key using :as
+      #     profile: render_one(user, ProfileView, "profile.json", as: :user)
+      # * Or use the full render function
+      #     profile: render(ProfileView, "profile.json", user: user)
+      profile: render_one(user, ProfileView, "profile.json", as: :user)
     }
   end
 

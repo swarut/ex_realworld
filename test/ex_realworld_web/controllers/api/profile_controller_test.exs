@@ -8,7 +8,8 @@ defmodule ExRealworldWeb.Api.ProfileControllerTest do
     setup [:create_user]
     test "return profile data", %{conn: conn, user: user} do
       conn = get(conn, Routes.api_profile_path(conn, :show, user.username))
-      assert %{"profile" => profile} = json_response(200, conn)
+      expected_username = user.username
+      assert %{"profile" => %{"username" => ^expected_username}} = json_response(conn, 200)
     end
   end
 
