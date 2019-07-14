@@ -3,10 +3,11 @@ defmodule ExRealworldWeb.Api.ProfileControllerTest do
 
   alias ExRealworld.Accounts
   alias ExRealworld.Accounts.User
-  alias ExRealworld.Follow.User
+  alias ExRealworld.Accounts.Follow
 
   describe "show profile" do
     setup [:create_user]
+
     test "return profile data", %{conn: conn, user: user} do
       conn = conn |> put_req_header("authorization", "Token " <> user.token)
       conn = get(conn, Routes.api_profile_path(conn, :show, user.username))
