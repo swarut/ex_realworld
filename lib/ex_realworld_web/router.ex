@@ -24,6 +24,8 @@ defmodule ExRealworldWeb.Router do
     put "/user", UserController, :update
 
     resources "/profiles", ProfileController, only: [:show]
+    post "/profiles/:username/follow", ProfileController, :follow
+    delete "/profiles/:username/unfollow", ProfileController, :unfollow
 
     get "/articles", ArticleController, :index
     get "/articles/:slug", ArticleController, :show
@@ -32,7 +34,6 @@ defmodule ExRealworldWeb.Router do
     put "/articles", ArticleController, :update
     delete "/articles", ArticleController, :delete
     # post "/articles/:slug/comments", ArticleController, :add_comment
-
   end
 
   scope "/", ExRealworldWeb do
