@@ -32,7 +32,14 @@ defmodule ExRealworldWeb.Api.UserControllerTest do
     setup [:create_user]
 
     test "with wrong credential, get error", %{conn: conn} do
-      conn = post(conn, Routes.api_login_path(conn, :login, user: Map.merge(@valid_user_attributes, %{password: "2"})))
+      conn =
+        post(
+          conn,
+          Routes.api_login_path(conn, :login,
+            user: Map.merge(@valid_user_attributes, %{password: "2"})
+          )
+        )
+
       assert %{"user" => user} = json_response(conn, 200)
       assert user["email"] == @valid_user_attributes.email
     end
@@ -64,7 +71,10 @@ defmodule ExRealworldWeb.Api.UserControllerTest do
 
     test "updates and returned updated user", %{conn: conn, user: user} do
       update_conn = conn |> put_req_header("authorization", "Token " <> user.token)
-      update_conn = put(update_conn, Routes.api_user_path(conn, :update, user), user: %{bio: "my bio"})
+
+      update_conn =
+        put(update_conn, Routes.api_user_path(conn, :update, user), user: %{bio: "my bio"})
+
       assert %{"user" => user} = json_response(update_conn, 200)
       assert user["bio"] == "my bio"
     end
@@ -79,6 +89,4 @@ defmodule ExRealworldWeb.Api.UserControllerTest do
     user = fixture(:user)
     {:ok, user: user}
   end
-
 end
-

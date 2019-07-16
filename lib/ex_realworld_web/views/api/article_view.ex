@@ -24,7 +24,7 @@ defmodule ExRealworldWeb.Api.ArticleView do
       createdAt: naive_datetime_to_iso_8601(article.inserted_at),
       updatedAt: naive_datetime_to_iso_8601(article.updated_at),
       favoritesCount: length(article.favourited_by),
-      tagList: article.tag_list |> Enum.map(fn(t) -> t.title end),
+      tagList: article.tag_list |> Enum.map(fn t -> t.title end),
       author: render_one(article.author, ContentsUserView, "user.json"),
       favourited_by: render_many(article.favourited_by, ContentsUserView, "user.json"),
       favorited: article.is_favourited
@@ -32,7 +32,7 @@ defmodule ExRealworldWeb.Api.ArticleView do
   end
 
   def render("show.json", %{article: article}) do
-    %{ article: render_one(article, ArticleView, "article.json")}
+    %{article: render_one(article, ArticleView, "article.json")}
   end
 
   def render("error.json", %{error: error}) do
@@ -47,5 +47,4 @@ defmodule ExRealworldWeb.Api.ArticleView do
     |> DateTime.from_naive!("Etc/UTC")
     |> DateTime.to_iso8601()
   end
-
 end

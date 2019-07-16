@@ -15,6 +15,5 @@ defmodule ExRealworld.Repo.Migrations.CreateUsers do
     create index(:users, :username)
     create index(:users, :token)
     create unique_index(:users, [:email])
-
   end
 end

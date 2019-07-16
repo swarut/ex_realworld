@@ -46,8 +46,10 @@ defmodule ExRealworld.Accounts do
     case get_user_by(email: email) do
       nil ->
         {:error, :user_not_found}
+
       user ->
         t = user.token
+
         case token do
           ^t -> {:ok, user}
           _ -> {:error, :invalid_token}
@@ -75,7 +77,9 @@ defmodule ExRealworld.Accounts do
   """
   def create_user(attrs \\ %{}) do
     with {:ok, user} <- %User{} |> User.changeset(attrs) |> Repo.insert() do
-      {:ok, token, _claims} = ExRealworldWeb.UserToken.encode_and_sign(%{id: user.id}, %{email: user.email})
+      {:ok, token, _claims} =
+        ExRealworldWeb.UserToken.encode_and_sign(%{id: user.id}, %{email: user.email})
+
       update_user(user, %{token: token})
     end
   end
@@ -125,5 +129,17 @@ defmodule ExRealworld.Accounts do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  @doc """
+  Follow a specific user.
+
+  ## Examples
+    iex> follow(user_who_follows, user_who_will_be_followed)
+  """
+  def follow_user(user_who_follows, user_who_will_be_followed) do
+  end
+  def follow_user(user_who_follows_id, user_who_will_be_followed_id) do
+
   end
 end

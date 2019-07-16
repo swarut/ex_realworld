@@ -27,7 +27,7 @@ defmodule ExRealworld.Factory do
   end
 
   def favourite_factory do
-    %Favourite {
+    %Favourite{
       user: build(:user),
       article: build(:article)
     }
@@ -41,7 +41,7 @@ defmodule ExRealworld.Factory do
       author: build(:contents_user),
       tag_list: [build(:tag)],
       favourited_by: [build(:contents_user)],
-      slug: sequence(:slug, &"A slug #{&1}"),
+      slug: sequence(:slug, &"A slug #{&1}")
     }
   end
 end

@@ -21,7 +21,8 @@ defmodule ExRealworldWeb.Api.UserController do
   end
 
   def login(conn, _params) do
-    user = Accounts.get_last_user
+    user = Accounts.get_last_user()
+
     conn
     |> put_status(:ok)
     |> render("show.json", user: user)
@@ -34,5 +35,4 @@ defmodule ExRealworldWeb.Api.UserController do
       |> render("show.json", user: user)
     end
   end
-
 end

@@ -1,8 +1,8 @@
 defmodule ExRealworld.Contents.User do
-
   alias ExRealworld.Contents.Favourite
 
   use Ecto.Schema
+
   schema "users" do
     field :bio, :string
     field :email, :string
@@ -16,5 +16,4 @@ defmodule ExRealworld.Contents.User do
 
     timestamps()
   end
-
 end

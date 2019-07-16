@@ -6,8 +6,20 @@ defmodule ExRealworld.ContentsTest do
   describe "articles" do
     alias ExRealworld.Contents.Article
 
-    @valid_attrs %{body: "some body", description: "some description", favourites_count: 42, slug: "some slug", title: "some title"}
-    @update_attrs %{body: "some updated body", description: "some updated description", favourites_count: 43, slug: "some updated slug", title: "some updated title"}
+    @valid_attrs %{
+      body: "some body",
+      description: "some description",
+      favourites_count: 42,
+      slug: "some slug",
+      title: "some title"
+    }
+    @update_attrs %{
+      body: "some updated body",
+      description: "some updated description",
+      favourites_count: 43,
+      slug: "some updated slug",
+      title: "some updated title"
+    }
     @invalid_attrs %{body: nil, description: nil, favourites_count: nil, slug: nil, title: nil}
 
     def article_fixture(attrs \\ %{}) do
@@ -27,7 +39,7 @@ defmodule ExRealworld.ContentsTest do
     setup [:create_article]
 
     test "list_articles/0 returns all articles", %{article: article} do
-      assert Enum.map(Contents.list_articles(), fn(article) -> article.id end) == [article.id]
+      assert Enum.map(Contents.list_articles(), fn article -> article.id end) == [article.id]
     end
 
     test "get_article!/1 returns the article with given id", %{article: article} do
@@ -69,6 +81,5 @@ defmodule ExRealworld.ContentsTest do
     test "change_article/1 returns a article changeset", %{article: article} do
       assert %Ecto.Changeset{} = Contents.change_article(article)
     end
-
   end
 end

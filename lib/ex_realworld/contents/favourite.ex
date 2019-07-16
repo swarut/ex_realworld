@@ -6,7 +6,6 @@ defmodule ExRealworld.Contents.Favourite do
   alias ExRealworld.Contents.User
 
   schema "favourites" do
-
     belongs_to :user, User
     belongs_to :article, Article
 

@@ -3,7 +3,7 @@ defmodule ExRealworldWeb.Api.ProfileController do
 
   alias ExRealworld.Accounts
 
-  plug :authenticate_user when action in [:show]
+  plug :authenticate_user when action in [:show, :follow, :unfollow]
 
   def show(conn, %{"id" => username}) do
     user = Accounts.get_user_by(username: username)
@@ -13,6 +13,10 @@ defmodule ExRealworldWeb.Api.ProfileController do
   end
 
   def follow(conn, %{"username" => username}) do
+    target_user = Accounts.get_user_by(%{username: username})
+
+    conn
+    |> render("show.json", %{user: target_user})
   end
 
   def unfollow(conn, %{"username" => username}) do

@@ -31,12 +31,13 @@ defmodule ExRealworld.Contents do
   def list_recent_articles(tag, favourited_by, limit, offset) do
     limit = limit || @max_recent_articles
 
-    query = (from a in Article)
-    |> Article.with_tag(tag)
-    |> Article.with_favourited_by(favourited_by)
-    |> Article.recent
-    |> Article.limit(limit)
-    |> Article.offset(offset)
+    query =
+      from(a in Article)
+      |> Article.with_tag(tag)
+      |> Article.with_favourited_by(favourited_by)
+      |> Article.recent()
+      |> Article.limit(limit)
+      |> Article.offset(offset)
 
     # TODO: Investigate more why the below code doesn't work.
     # Repo.all(query, preload: :author)
@@ -57,9 +58,11 @@ defmodule ExRealworld.Contents do
       ** (Ecto.NoResultsError)
 
   """
-  def get_article!(id), do: Repo.get!(Article, id) |> Repo.preload([:author, :tag_list, :favourited_by])
+  def get_article!(id),
+    do: Repo.get!(Article, id) |> Repo.preload([:author, :tag_list, :favourited_by])
 
-  def get_article_by_slug(slug), do: Repo.get_by(Article, slug: slug) |> Repo.preload([:author, :tag_list, :favourited_by])
+  def get_article_by_slug(slug),
+    do: Repo.get_by(Article, slug: slug) |> Repo.preload([:author, :tag_list, :favourited_by])
 
   @doc """
   Creates a article.
@@ -74,9 +77,10 @@ defmodule ExRealworld.Contents do
 
   """
   def create_article(attrs \\ %{}) do
-    article = %Article{}
-    |> Article.changeset(attrs)
-    |> Repo.insert()
+    article =
+      %Article{}
+      |> Article.changeset(attrs)
+      |> Repo.insert()
 
     case article do
       {:ok, article} -> {:ok, article |> Repo.preload([:author, :tag_list, :favourited_by])}
@@ -132,13 +136,14 @@ defmodule ExRealworld.Contents do
   end
 
   def articles_with_is_favourited_flag(articles, target_user) do
-    articles |> Enum.map(fn(article) ->
-      is_favourited = article.favourited_by
-      |> Enum.map(fn(user) -> user.id end)
-      |> Enum.member?(target_user.id)
+    articles
+    |> Enum.map(fn article ->
+      is_favourited =
+        article.favourited_by
+        |> Enum.map(fn user -> user.id end)
+        |> Enum.member?(target_user.id)
 
       Map.put(article, :is_favourited, is_favourited)
     end)
   end
-
 end

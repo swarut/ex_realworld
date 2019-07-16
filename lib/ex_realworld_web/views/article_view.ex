@@ -11,11 +11,13 @@ defmodule ExRealworldWeb.ArticleView do
   end
 
   def render("article.json", %{article: article}) do
-    %{id: article.id,
+    %{
+      id: article.id,
       title: article.title,
       slug: article.slug,
       description: article.description,
       body: article.body,
-      favourites_count: article.favourites_count}
+      favourites_count: article.favourites_count
+    }
   end
 end

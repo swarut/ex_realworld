@@ -5,6 +5,7 @@ defmodule ExRealworldWeb.UserToken do
     sub = to_string(resource.id)
     {:ok, sub}
   end
+
   def subject_for_token(_, _) do
     {:error, :reason_for_error}
   end
@@ -15,8 +16,8 @@ defmodule ExRealworldWeb.UserToken do
     resource = %{id: id, email: email}
     {:ok, resource}
   end
+
   def resource_from_claims(_claims) do
     {:error, :reason_for_error}
   end
-
 end

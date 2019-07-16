@@ -23,5 +23,4 @@ defmodule ExRealworldWeb.Api.ProfileView do
       profile: render_one(user, ProfileView, "profile.json", as: :user)
     }
   end
-
 end

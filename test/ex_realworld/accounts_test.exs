@@ -5,9 +5,22 @@ defmodule ExRealworld.AccountsTest do
   alias ExRealworld.Accounts.User
 
   describe "users" do
-
-    @valid_attrs %{bio: "some bio", email: "some email", image: "some image", token: "some token", username: "some username", password: "password"}
-    @update_attrs %{bio: "some updated bio", email: "some updated email", image: "some updated image", token: "some updated token", username: "some updated username", password: "password"}
+    @valid_attrs %{
+      bio: "some bio",
+      email: "some email",
+      image: "some image",
+      token: "some token",
+      username: "some username",
+      password: "password"
+    }
+    @update_attrs %{
+      bio: "some updated bio",
+      email: "some updated email",
+      image: "some updated image",
+      token: "some updated token",
+      username: "some updated username",
+      password: "password"
+    }
     @invalid_attrs %{bio: nil, email: nil, image: nil, token: nil, username: nil}
 
     def user_fixture(attrs \\ %{}) do
@@ -73,33 +86,39 @@ defmodule ExRealworld.AccountsTest do
       user = user_fixture()
       assert %Ecto.Changeset{} = Accounts.change_user(user)
     end
-
   end
 
   describe "authentication" do
     test "authenticate_with_email_and_token returns user if valid" do
       {:ok, user} = Accounts.create_user(@valid_attrs)
-      assert {:ok, %User{} = user } = Accounts.authenticate_with_email_and_token(user.email, user.token)
+
+      assert {:ok, %User{} = user} =
+               Accounts.authenticate_with_email_and_token(user.email, user.token)
     end
 
     test "authenticate_with_email_and_token returns error if user not found" do
-      assert {:error, :user_not_found } = Accounts.authenticate_with_email_and_token("xxxx", "yyy")
+      assert {:error, :user_not_found} = Accounts.authenticate_with_email_and_token("xxxx", "yyy")
     end
 
     test "authenticate_with_email_and_token returns error if token was invalid" do
       {:ok, user} = Accounts.create_user(@valid_attrs)
-      assert {:error, :invalid_token } = Accounts.authenticate_with_email_and_token(user.email, "randomtoken")
+
+      assert {:error, :invalid_token} =
+               Accounts.authenticate_with_email_and_token(user.email, "randomtoken")
     end
 
     test "authenticate_with_email_and_password returns user if valid" do
       {:ok, user} = Accounts.create_user(@valid_attrs)
-      assert {:ok, user} = Accounts.authenticate_with_email_and_password(user.email, @valid_attrs.password)
+
+      assert {:ok, user} =
+               Accounts.authenticate_with_email_and_password(user.email, @valid_attrs.password)
     end
 
     test "authenticate_with_email_and_password returns error if password was invalid" do
       {:ok, user} = Accounts.create_user(@valid_attrs)
-      assert {:error, "invalid password"} = Accounts.authenticate_with_email_and_password(user.email, "1123")
+
+      assert {:error, "invalid password"} =
+               Accounts.authenticate_with_email_and_password(user.email, "1123")
     end
   end
-
 end

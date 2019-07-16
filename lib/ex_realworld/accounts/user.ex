@@ -15,8 +15,15 @@ defmodule ExRealworld.Accounts.User do
     field :encrypted_password, :string
     field :password, :string, virtual: true
 
-    many_to_many(:followed, User, join_through: Follow, join_keys: [follower_id: :id, followed_id: :id])
-    many_to_many(:followers, User, join_through: Follow, join_keys: [followed_id: :id, follower_id: :id])
+    many_to_many(:followed, User,
+      join_through: Follow,
+      join_keys: [follower_id: :id, followed_id: :id]
+    )
+
+    many_to_many(:followers, User,
+      join_through: Follow,
+      join_keys: [followed_id: :id, follower_id: :id]
+    )
 
     timestamps()
   end
@@ -41,6 +48,7 @@ defmodule ExRealworld.Accounts.User do
     changeset
     |> put_change(:encrypted_password, Pbkdf2.hash_pwd_salt(password))
   end
+
   defp encrypt_password(changeset) do
     changeset
   end
@@ -49,6 +57,7 @@ defmodule ExRealworld.Accounts.User do
     changeset
     |> put_change(:password, nil)
   end
+
   defp strip_password(changeset) do
     changeset
   end
@@ -56,6 +65,7 @@ defmodule ExRealworld.Accounts.User do
   defp validate_email_not_nil(changeset = %Ecto.Changeset{valid?: true, changes: %{email: nil}}) do
     add_error(changeset, :email, "can not be null")
   end
+
   defp validate_email_not_nil(changeset) do
     changeset
   end
