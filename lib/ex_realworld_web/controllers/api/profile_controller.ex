@@ -25,5 +25,12 @@ defmodule ExRealworldWeb.Api.ProfileController do
   end
 
   def unfollow(conn, %{"username" => username}) do
+    target_user = Accounts.get_user_by(%{username: username})
+    current_user = conn.assigns[:current_user]
+
+    unfollowed_user = Accounts.unfollow_user(current_user, target_user)
+    unfollowed_user = Accounts.fill_follow_data(current_user, unfollowed_user)
+    conn
+    |> render("show.json", %{user: unfollowed_user})
   end
 end

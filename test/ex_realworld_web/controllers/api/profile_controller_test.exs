@@ -6,6 +6,8 @@ defmodule ExRealworldWeb.Api.ProfileControllerTest do
   alias ExRealworld.Accounts.Follow
   alias ExRealworld.Repo
 
+  import Ecto.Query, warn: false
+
   describe "show own profile" do
     setup [:create_user]
 
@@ -66,6 +68,23 @@ defmodule ExRealworldWeb.Api.ProfileControllerTest do
     end
   end
 
+  describe "unfollow" do
+    setup [:create_follow_users]
+
+    test "removes follow record", %{
+      conn: conn,
+      user_who_follows: user_who_follows,
+      user_who_was_followed: user_who_was_followed
+    } do
+      unfollowed_user_username = user_who_was_followed.username
+      conn = conn |> put_req_header("authorization", "Token " <> user_who_follows.token)
+      conn = delete(conn, Routes.api_profile_path(conn, :unfollow, unfollowed_user_username))
+
+      assert %{"profile" => %{"username" => ^unfollowed_user_username, "following" => false}} =
+               json_response(conn, 200)
+    end
+  end
+
   def create_user(_) do
     {:ok, user} =
       Accounts.create_user(%{
@@ -95,8 +114,8 @@ defmodule ExRealworldWeb.Api.ProfileControllerTest do
 
     {:ok, user_who_was_not_followed} =
       Accounts.create_user(%{
-        username: "kinjoi",
-        email: "kinjoi@yowamushi.com",
+        username: "kinjou",
+        email: "kinjou@yowamushi.com",
         password: "password"
       })
 

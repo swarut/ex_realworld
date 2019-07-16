@@ -137,8 +137,9 @@ defmodule ExRealworld.Accounts do
 
   ## Examples
 
-      iex> follow(user_who_follows, user_who_will_be_followed)
-      %User{id:.....}
+      iex> follow_user(user_who_follows, user_who_will_be_followed)
+      %User{id: 1, following: true}
+
   """
   def follow_user(user_who_follows, user_who_will_be_followed)
       when is_map(user_who_follows) and is_map(user_who_will_be_followed) do
@@ -159,25 +160,63 @@ defmodule ExRealworld.Accounts do
   end
 
   @doc """
+  Unfollow a specific user.
+
+  ## Examples
+
+      iex> unfollow_user(user_who_follows, user_who_will_be_unfollowed)
+      %User{id: 1, following: false}
+
+  """
+  def unfollow_user(user_who_follows, user_who_will_be_unfollowed)
+      when is_map(user_who_follows) and is_map(user_who_will_be_unfollowed) do
+    unfollow_user(user_who_follows.id, user_who_will_be_unfollowed.id)
+  end
+
+  def unfollow_user(user_who_follows_id, user_who_will_be_unfollowed_id)
+      when is_number(user_who_follows_id) and is_number(user_who_will_be_unfollowed_id) do
+    query = Follow.follow_record(user_who_follows_id, user_who_will_be_unfollowed_id)
+    follow_record = Repo.get_by(query, %{})
+
+    with {:ok, unfollowed_record} <-
+           Repo.delete(follow_record) do
+      get_user!(unfollowed_record.followed_id)
+    end
+  end
+
+  @doc """
   Fill the target user record with the predicate indicating if the target user was followed by the user or not.
 
   # Examples
+
       iex> fill_follow_data(user_who_may_follow, user_who_may_be_followed)
       %User{id: 1, following: true}
+
   """
   def fill_follow_data(user_who_may_follow, user_who_may_be_followed) do
-    Map.put(user_who_may_be_followed, :following, does_user_follows(user_who_may_follow.id, user_who_may_be_followed.id))
+    Map.put(
+      user_who_may_be_followed,
+      :following,
+      does_user_follows(user_who_may_follow.id, user_who_may_be_followed.id)
+    )
   end
 
   @doc """
   Check whether the user follows the target user or not.
 
   # Examples
+
       iex> does_user_follows(user_who_may_follow, user_who_may_be_followed)
       true
+
   """
   def does_user_follows(user_who_may_follow_id, user_who_may_be_followed_id) do
-    query = from f in Follow, where: f.follower_id == ^user_who_may_follow_id and f.followed_id == ^user_who_may_be_followed_id
+    query =
+      from f in Follow,
+        where:
+          f.follower_id == ^user_who_may_follow_id and
+            f.followed_id == ^user_who_may_be_followed_id
+
     Repo.exists?(query)
   end
 end
