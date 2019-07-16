@@ -3,6 +3,8 @@ defmodule ExRealworldWeb.Api.ArticleController do
 
   alias ExRealworld.Contents
 
+  plug :authenticate_user when action in [:feed]
+
   def index(conn, params) do
     favourited_by = params["favorited"]
     offset = params["offset"]
@@ -38,5 +40,9 @@ defmodule ExRealworldWeb.Api.ArticleController do
 
     conn
     |> render("show.json", %{article: article})
+  end
+
+  def feed(conn, _params) do
+    #
   end
 end

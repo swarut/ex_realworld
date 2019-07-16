@@ -1,6 +1,8 @@
 defmodule ExRealworldWeb.Api.ArticleControllerTest do
   use ExRealworldWeb.ConnCase
 
+  alias ExRealworld.Repo
+  alias ExRealworld.Accounts
   alias ExRealworld.Contents.Article
   alias ExRealworld.Contents.Tag
   alias ExRealworld.Contents.User
@@ -115,12 +117,14 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   end
 
   # TODO: need to implement follow first
-  # describe "feed" do
-  #   setup [:create_articles_by_followed_user]
-  #   test "list article from followed users", %{conn: conn} do
+  describe "feed" do
+    setup [:create_articles_by_followed_user]
 
-  #   end
-  # end
+    test "list article from followed users", %{conn: conn, user: user, article1: article} do
+      conn = get(conn, Routes.api_article_path(conn, :feed))
+      assert %{"articles" => articles, "articlesCount" => 1} = json_response(conn, 200)
+    end
+  end
 
   def create_user(_) do
     {:ok, user: insert(:contents_user)}
@@ -153,14 +157,49 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
 
   def create_articles_with_is_favourited(_) do
     {:ok, user} =
-      ExRealworld.Accounts.create_user(%{
+      Accounts.create_user(%{
         username: "username",
         email: "email@email.com",
         password: "password"
       })
 
-    user = ExRealworld.Repo.get(User, user.id)
+    user = Repo.get(User, user.id)
     article = insert(:article, favourited_by: [user])
     {:ok, [user: user, article: article]}
+  end
+
+  def create_articles_by_followed_user(_) do
+    {:ok, user} =
+      Accounts.create_user(%{
+        username: "ray",
+        email: "ray@macross7.com",
+        password: "password"
+      })
+
+    {:ok, followed_user} =
+      Accounts.create_user(%{
+        username: "verfedus",
+        email: "verfedus@macross7.com",
+        password: "password"
+      })
+
+    {:ok, non_followed_user} =
+      Accounts.create_user(%{
+        username: "gemlin",
+        email: "gemlin@macross7.com",
+        password: "password"
+      })
+
+    user = Repo.get(User, user.id)
+    followed_user = Repo.get(User, followed_user.id)
+    non_followed_user = Repo.get(User, non_followed_user.id)
+    Accounts.follow_user(user, followed_user)
+
+    author1 = struct(User, Map.from_struct(followed_user))
+    author2 = struct(User, Map.from_struct(non_followed_user))
+    article1 = insert(:article, author: author1)
+    insert(:article, author: author2)
+
+    {:ok, [user: user, article1: article1]}
   end
 end
