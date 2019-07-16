@@ -13,7 +13,9 @@ defmodule ExRealworldWeb.Api.ProfileControllerTest do
       conn = conn |> put_req_header("authorization", "Token " <> user.token)
       conn = get(conn, Routes.api_profile_path(conn, :show, user.username))
       expected_username = user.username
-      assert %{"profile" => %{"username" => ^expected_username}} = json_response(conn, 200)
+
+      assert %{"profile" => %{"username" => ^expected_username, "following" => false}} =
+               json_response(conn, 200)
     end
   end
 
@@ -28,6 +30,7 @@ defmodule ExRealworldWeb.Api.ProfileControllerTest do
       followed_user_username = user_who_was_followed.username
       conn = conn |> put_req_header("authorization", "Token " <> user_who_follows.token)
       conn = post(conn, Routes.api_profile_path(conn, :follow, followed_user_username))
+
       assert %{"profile" => %{"username" => ^followed_user_username, "following" => true}} =
                json_response(conn, 200)
     end
@@ -62,6 +65,7 @@ defmodule ExRealworldWeb.Api.ProfileControllerTest do
 
     user_who_follows = Repo.get(User, user_who_follows.id)
     user_who_was_followed = Repo.get(User, user_who_was_followed.id)
+
     {:ok, user_who_follows: user_who_follows, user_who_was_followed: user_who_was_followed}
   end
 end

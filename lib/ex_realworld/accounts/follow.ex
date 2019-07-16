@@ -14,7 +14,8 @@ defmodule ExRealworld.Accounts.Follow do
   @doc false
   def changeset(follow, attrs) do
     follow
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [:follower_id, :followed_id])
+    |> validate_required([:follower_id, :followed_id])
+    |> unique_constraint(:follower_id, name: :follows_follower_id_followed_id_index)
   end
 end

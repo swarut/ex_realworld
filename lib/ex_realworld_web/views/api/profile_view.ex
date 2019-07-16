@@ -4,10 +4,12 @@ defmodule ExRealworldWeb.Api.ProfileView do
   alias ExRealworldWeb.Api.ProfileView
 
   def render("profile.json", %{user: user}) do
+    IO.puts("usersrseresresrse #{inspect user}")
     %{
       username: user.username,
       bio: user.bio,
-      image: user.image
+      image: user.image,
+      following: user.following
     }
   end
 
