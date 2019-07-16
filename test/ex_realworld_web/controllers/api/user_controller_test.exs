@@ -2,7 +2,6 @@ defmodule ExRealworldWeb.Api.UserControllerTest do
   use ExRealworldWeb.ConnCase
 
   alias ExRealworld.Accounts
-  alias ExRealworld.Accounts.User
 
   @valid_user_attributes %{email: "email@email.com", password: "password"}
 
@@ -59,7 +58,7 @@ defmodule ExRealworldWeb.Api.UserControllerTest do
   describe "index with invalid token" do
     setup [:create_user]
 
-    test "returns error", %{conn: conn, user: user} do
+    test "returns error", %{conn: conn} do
       index_conn = conn |> put_req_header("authorization", "Token incorrect token")
       index_conn = get(index_conn, Routes.api_user_path(conn, :index))
       assert %{"error" => "unauthorized"} = json_response(index_conn, 401)

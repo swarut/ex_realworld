@@ -3,7 +3,6 @@ defmodule ExRealworldWeb.Api.ProfileControllerTest do
 
   alias ExRealworld.Accounts
   alias ExRealworld.Accounts.User
-  alias ExRealworld.Accounts.Follow
   alias ExRealworld.Repo
 
   import Ecto.Query, warn: false
