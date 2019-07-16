@@ -77,7 +77,7 @@ defmodule ExRealworldWeb.Api.ProfileControllerTest do
     } do
       unfollowed_user_username = user_who_was_followed.username
       conn = conn |> put_req_header("authorization", "Token " <> user_who_follows.token)
-      conn = delete(conn, Routes.api_profile_path(conn, :unfollow, unfollowed_user_username))
+      conn = delete(conn, Routes.api_profile_path(conn, :follow, unfollowed_user_username))
 
       assert %{"profile" => %{"username" => ^unfollowed_user_username, "following" => false}} =
                json_response(conn, 200)

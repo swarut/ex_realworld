@@ -25,7 +25,7 @@ defmodule ExRealworldWeb.Router do
 
     resources "/profiles", ProfileController, only: [:show]
     post "/profiles/:username/follow", ProfileController, :follow
-    delete "/profiles/:username/unfollow", ProfileController, :unfollow
+    delete "/profiles/:username/follow", ProfileController, :unfollow
 
     get "/articles", ArticleController, :index
     get "/articles/:slug", ArticleController, :show
