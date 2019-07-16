@@ -6,7 +6,7 @@ defmodule ExRealworldWeb.Api.ProfileControllerTest do
   alias ExRealworld.Accounts.Follow
   alias ExRealworld.Repo
 
-  describe "show profile" do
+  describe "show own profile" do
     setup [:create_user]
 
     test "returns profile data", %{conn: conn, user: user} do
@@ -19,15 +19,45 @@ defmodule ExRealworldWeb.Api.ProfileControllerTest do
     end
   end
 
+  describe "show target user profile" do
+    setup [:create_follow_users]
+
+    test "returns profile data with following flag as true for followed user", %{
+      conn: conn,
+      user_who_follows: user_who_follows,
+      user_who_was_followed: user_who_was_followed
+    } do
+      conn = conn |> put_req_header("authorization", "Token " <> user_who_follows.token)
+      conn = get(conn, Routes.api_profile_path(conn, :show, user_who_was_followed.username))
+      expected_username = user_who_was_followed.username
+
+      assert %{"profile" => %{"username" => ^expected_username, "following" => true}} =
+               json_response(conn, 200)
+    end
+
+    test "returns profile data with following flag as flase for non-followed user", %{
+      conn: conn,
+      user_who_follows: user_who_follows,
+      user_who_was_not_followed: user_who_was_not_followed
+    } do
+      conn = conn |> put_req_header("authorization", "Token " <> user_who_follows.token)
+      conn = get(conn, Routes.api_profile_path(conn, :show, user_who_was_not_followed.username))
+      expected_username = user_who_was_not_followed.username
+
+      assert %{"profile" => %{"username" => ^expected_username, "following" => false}} =
+               json_response(conn, 200)
+    end
+  end
+
   describe "follow" do
     setup [:create_follow_users]
 
     test "creates follow record", %{
       conn: conn,
       user_who_follows: user_who_follows,
-      user_who_was_followed: user_who_was_followed
+      user_who_was_not_followed: user_who_was_not_followed
     } do
-      followed_user_username = user_who_was_followed.username
+      followed_user_username = user_who_was_not_followed.username
       conn = conn |> put_req_header("authorization", "Token " <> user_who_follows.token)
       conn = post(conn, Routes.api_profile_path(conn, :follow, followed_user_username))
 
@@ -63,9 +93,22 @@ defmodule ExRealworldWeb.Api.ProfileControllerTest do
         password: "password"
       })
 
+    {:ok, user_who_was_not_followed} =
+      Accounts.create_user(%{
+        username: "kinjoi",
+        email: "kinjoi@yowamushi.com",
+        password: "password"
+      })
+
     user_who_follows = Repo.get(User, user_who_follows.id)
     user_who_was_followed = Repo.get(User, user_who_was_followed.id)
+    user_who_was_not_followed = Repo.get(User, user_who_was_not_followed.id)
 
-    {:ok, user_who_follows: user_who_follows, user_who_was_followed: user_who_was_followed}
+    Accounts.follow_user(user_who_follows, user_who_was_followed)
+
+    {:ok,
+     user_who_follows: user_who_follows,
+     user_who_was_followed: user_who_was_followed,
+     user_who_was_not_followed: user_who_was_not_followed}
   end
 end
