@@ -189,11 +189,11 @@ defmodule ExRealworld.Accounts do
 
   # Examples
 
-      iex> fill_follow_data(user_who_may_follow, user_who_may_be_followed)
+      iex> fill_follow_data(user_who_may_be_followed, user_who_may_follow)
       %User{id: 1, following: true}
 
   """
-  def fill_follow_data(user_who_may_follow, user_who_may_be_followed) do
+  def fill_follow_data(user_who_may_be_followed, user_who_may_follow) do
     Map.put(
       user_who_may_be_followed,
       :following,
