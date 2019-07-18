@@ -42,7 +42,21 @@ defmodule ExRealworldWeb.Api.ArticleController do
     |> render("show.json", %{article: article})
   end
 
-  def feed(conn, _params) do
-    #
+  def feed(conn, params) do
+    offset = params["offset"]
+    limit = params["limit"]
+
+    current_user = conn.assigns[:current_user]
+
+    articles =
+      case current_user do
+        nil -> []
+        current_user -> Contents.get_feed_by_user_id(current_user.id, offset, limit)
+      end
+
+    IO.puts("ARTICLES - #{inspect(articles)}")
+
+    conn
+    |> render("articles.json", %{articles: articles})
   end
 end

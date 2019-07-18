@@ -65,6 +65,26 @@ defmodule ExRealworld.Contents do
     do: Repo.get_by(Article, slug: slug) |> Repo.preload([:author, :tag_list, :favourited_by])
 
   @doc """
+  Get feed for a specific user
+
+  ## Examples
+
+      iex> get_feed_by_user_id(1)
+      [%Article{}, %Article{}]
+
+  """
+  def get_feed_by_user_id(user_id, limit, offset) do
+    query =
+      from(a in Article)
+      |> Article.from_followed_users_of_user(user_id)
+      |> Article.recent()
+      |> Article.limit(limit)
+      |> Article.offset(offset)
+
+    Repo.all(query) |> Repo.preload([:author, :tag_list, :favourited_by])
+  end
+
+  @doc """
   Creates a article.
 
   ## Examples

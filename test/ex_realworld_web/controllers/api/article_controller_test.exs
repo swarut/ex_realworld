@@ -121,6 +121,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
     setup [:create_articles_by_followed_user]
 
     test "list article from followed users", %{conn: conn, user: user, article1: article} do
+      conn = conn |> put_req_header("authorization", "Token " <> user.token)
       conn = get(conn, Routes.api_article_path(conn, :feed))
       assert %{"articles" => articles, "articlesCount" => 1} = json_response(conn, 200)
     end

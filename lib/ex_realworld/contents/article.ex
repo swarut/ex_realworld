@@ -52,6 +52,13 @@ defmodule ExRealworld.Contents.Article do
       where: u.username == ^author
   end
 
+  def from_followed_users_of_user(query, user_id) do
+    from a in query,
+      join: u in assoc(a, :author),
+      join: f in Follow,
+      where: f.follower_id == ^user_id
+  end
+
   def limit(query, lim) do
     from a in query, limit: ^lim
   end
