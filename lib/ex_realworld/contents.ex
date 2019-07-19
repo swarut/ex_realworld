@@ -7,8 +7,6 @@ defmodule ExRealworld.Contents do
   alias ExRealworld.Repo
 
   alias ExRealworld.Contents.Article
-  alias ExRealworld.Contents.Favourite
-  alias ExRealworld.Contents.User
 
   @max_recent_articles 20
 
@@ -80,6 +78,9 @@ defmodule ExRealworld.Contents do
       |> Article.recent()
       |> Article.limit(limit)
       |> Article.offset(offset)
+
+    # sql = Repo.to_sql(:all, query)
+    # IO.puts("SQL = #{inspect(sql)}")
 
     Repo.all(query) |> Repo.preload([:author, :tag_list, :favourited_by])
   end

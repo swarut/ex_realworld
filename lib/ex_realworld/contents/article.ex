@@ -7,6 +7,7 @@ defmodule ExRealworld.Contents.Article do
   alias ExRealworld.Contents.Favourite
   alias ExRealworld.Contents.Tag
   alias ExRealworld.Contents.User
+  alias ExRealworld.Contents.Follow
 
   schema "articles" do
     field :body, :string
@@ -56,6 +57,7 @@ defmodule ExRealworld.Contents.Article do
     from a in query,
       join: u in assoc(a, :author),
       join: f in Follow,
+      on: f.follower_id == u.id,
       where: f.follower_id == ^user_id
   end
 
