@@ -55,9 +55,8 @@ defmodule ExRealworld.Contents.Article do
 
   def from_followed_users_of_user(query, user_id) do
     from a in query,
-      join: u in assoc(a, :author),
       join: f in Follow,
-      on: f.follower_id == u.id,
+      on: f.followed_id == a.user_id,
       where: f.follower_id == ^user_id
   end
 

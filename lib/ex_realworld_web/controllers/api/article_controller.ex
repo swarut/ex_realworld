@@ -54,8 +54,6 @@ defmodule ExRealworldWeb.Api.ArticleController do
         current_user -> Contents.get_feed_by_user_id(current_user.id, offset, limit)
       end
 
-    IO.puts("ARTICLES - #{inspect(articles)}")
-
     conn
     |> render("articles.json", %{articles: articles})
   end
