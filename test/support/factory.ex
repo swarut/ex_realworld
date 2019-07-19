@@ -37,7 +37,7 @@ defmodule ExRealworld.Factory do
     %Article{
       title: sequence(:title, &"A title #{&1}"),
       description: "Fire!",
-      body: "Ore no uta o kike!",
+      body: sequence(:body, &"Ore no uta o kike! #{&1}"),
       author: build(:contents_user),
       tag_list: [build(:tag)],
       favourited_by: [build(:contents_user)],
