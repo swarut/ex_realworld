@@ -3,7 +3,7 @@ defmodule ExRealworldWeb.Api.ArticleController do
 
   alias ExRealworld.Contents
 
-  plug :authenticate_user when action in [:feed]
+  plug :authenticate_user when action in [:feed, :update]
 
   def index(conn, params) do
     favourited_by = params["favorited"]
@@ -37,6 +37,20 @@ defmodule ExRealworldWeb.Api.ArticleController do
   def show(conn, params) do
     slug = params["slug"]
     article = Contents.get_article_by_slug(slug)
+
+    conn
+    |> render("show.json", %{article: article})
+  end
+
+  def update(conn, params) do
+    {:ok, article} =
+      case conn.assigns[:current_user] do
+        nil ->
+          {:ok, nil}
+
+        _ ->
+          Contents.update_article(Contents.get_article!(params["id"]), params["article"])
+      end
 
     conn
     |> render("show.json", %{article: article})

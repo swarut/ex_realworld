@@ -116,6 +116,21 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
     end
   end
 
+  describe "update article" do
+    setup [:create_article_with_user]
+
+    test "update the article and return it", %{conn: conn, user: user, article: article} do
+      conn = conn |> put_req_header("authorization", "Token " <> user.token)
+
+      conn =
+        put(conn, Routes.api_article_path(conn, :update, article), article: %{title: "new title"})
+
+      assert %{"article" => a} = json_response(conn, 200)
+      assert a["title"] == "new title"
+      assert a["slug"] == "new-title"
+    end
+  end
+
   # TODO: need to implement follow first
   describe "feed" do
     setup [:create_articles_by_followed_user]
@@ -145,7 +160,15 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
 
   def create_article_with_user(_) do
     insert_list(3, :article)
-    user = insert(:contents_user)
+
+    {:ok, user} =
+      Accounts.create_user(%{
+        username: "username",
+        email: "email@email.com",
+        password: "password"
+      })
+
+    user = Repo.get(User, user.id)
     {:ok, [user: user, article: insert(:article, author: user)]}
   end
 

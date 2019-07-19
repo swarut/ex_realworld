@@ -27,12 +27,10 @@ defmodule ExRealworldWeb.Router do
     post "/profiles/:username/follow", ProfileController, :follow
     delete "/profiles/:username/follow", ProfileController, :unfollow
 
+    resources "/articles", ArticleController, except: [:index]
     get "/articles", ArticleController, :index
     get "/articles/feed", ArticleController, :feed
     get "/articles/:slug", ArticleController, :show
-    post "/articles", ArticleController, :create
-    put "/articles", ArticleController, :update
-    delete "/articles", ArticleController, :delete
     # post "/articles/:slug/comments", ArticleController, :add_comment
   end
 
