@@ -35,7 +35,7 @@ defmodule ExRealworldWeb.Api.ArticleController do
   end
 
   def show(conn, params) do
-    slug = params["slug"]
+    slug = params["id"]
     article = Contents.get_article_by_slug(slug)
 
     conn
@@ -49,7 +49,7 @@ defmodule ExRealworldWeb.Api.ArticleController do
           {:ok, nil}
 
         _ ->
-          Contents.update_article(Contents.get_article!(params["id"]), params["article"])
+          Contents.update_article(Contents.get_article_by_slug(params["id"]), params["article"])
       end
 
     conn

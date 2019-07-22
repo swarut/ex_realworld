@@ -123,7 +123,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
       conn = conn |> put_req_header("authorization", "Token " <> user.token)
 
       conn =
-        put(conn, Routes.api_article_path(conn, :update, article), article: %{title: "new title"})
+        put(conn, Routes.api_article_path(conn, :update, article.slug), article: %{title: "new title"})
 
       assert %{"article" => a} = json_response(conn, 200)
       assert a["title"] == "new title"
