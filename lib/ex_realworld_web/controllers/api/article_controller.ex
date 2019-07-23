@@ -75,13 +75,37 @@ defmodule ExRealworldWeb.Api.ArticleController do
   def favorite(conn, params) do
     current_user = conn.assigns[:current_user]
     slug = params["id"]
-    article = case current_user do
-      nil -> nil
-      _ -> Contents.get_article_by_slug(slug)
-    end
+
+    article =
+      case current_user do
+        nil -> nil
+        _ -> Contents.get_article_by_slug(slug)
+      end
 
     Contents.create_favourite(%{user_id: current_user.id, article_id: article.id})
-    article = Contents.get_article!(article.id) |> Contents.article_with_is_favourited_flag(current_user)
+
+    article =
+      Contents.get_article!(article.id) |> Contents.article_with_is_favourited_flag(current_user)
+
+    conn
+    |> render("show.json", %{article: article})
+  end
+
+  def unfavorite(conn, params) do
+    current_user = conn.assigns[:current_user]
+    slug = params["id"]
+
+    article =
+      case current_user do
+        nil -> nil
+        _ -> Contents.get_article_by_slug(slug)
+      end
+
+    favourite = Contents.get_favourite_by_article_id_and_user_id(article.id, current_user.id)
+    {:ok, _favourite} = Contents.delete_favourite(favourite)
+
+    article =
+      Contents.get_article!(article.id) |> Contents.article_with_is_favourited_flag(current_user)
 
     conn
     |> render("show.json", %{article: article})

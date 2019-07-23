@@ -183,4 +183,13 @@ defmodule ExRealworld.Contents do
     |> Favourite.changeset(attr)
     |> Repo.insert()
   end
+
+  def delete_favourite(favourite) do
+    Repo.delete(favourite)
+  end
+
+  def get_favourite_by_article_id_and_user_id(article_id, user_id) do
+    query = from f in Favourite
+    Repo.get_by(query, %{article_id: article_id, user_id: user_id})
+  end
 end

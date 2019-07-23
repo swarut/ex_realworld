@@ -153,6 +153,17 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
     end
   end
 
+  describe "unfavorite" do
+    setup [:create_articles_with_is_favourited]
+
+    test "unfavourites article", %{conn: conn, user: user, article: article} do
+      conn = conn |> put_req_header("authorization", "Token " <> user.token)
+      conn = delete(conn, Routes.api_article_path(conn, :favorite, article.slug))
+      assert %{"article" => a } = json_response(conn, 200)
+      assert a["favorited"] == false
+    end
+  end
+
   def create_user(_) do
     {:ok, user: insert(:contents_user)}
   end
