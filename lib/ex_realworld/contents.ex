@@ -7,6 +7,7 @@ defmodule ExRealworld.Contents do
   alias ExRealworld.Repo
 
   alias ExRealworld.Contents.Article
+  alias ExRealworld.Contents.Favourite
 
   @max_recent_articles 20
 
@@ -166,5 +167,20 @@ defmodule ExRealworld.Contents do
 
       Map.put(article, :is_favourited, is_favourited)
     end)
+  end
+
+  def article_with_is_favourited_flag(article, target_user) do
+    is_favourited =
+      article.favourited_by
+      |> Enum.map(fn user -> user.id end)
+      |> Enum.member?(target_user.id)
+
+    Map.put(article, :is_favourited, is_favourited)
+  end
+
+  def create_favourite(attr \\ %{}) do
+    %Favourite{}
+    |> Favourite.changeset(attr)
+    |> Repo.insert()
   end
 end

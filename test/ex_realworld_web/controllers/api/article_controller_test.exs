@@ -38,7 +38,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   describe "list articles with tag filter" do
     setup [:create_articles_with_tag]
 
-    test "return most recent articles that use a tag", %{conn: conn, tag: tag} do
+    test "returns most recent articles that use a tag", %{conn: conn, tag: tag} do
       conn = get(conn, Routes.api_article_path(conn, :index, tag: tag))
       assert %{"articlesCount" => 1} = json_response(conn, 200)
     end
@@ -103,7 +103,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   end
 
   describe "create article" do
-    test "add new article and return it", %{conn: conn} do
+    test "adds new article and return it", %{conn: conn} do
       {title, description, body} = {"title", "description", "body"}
 
       conn =
@@ -119,7 +119,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   describe "update article" do
     setup [:create_article_with_user]
 
-    test "update the article and return it", %{conn: conn, user: user, article: article} do
+    test "updates the article and return it", %{conn: conn, user: user, article: article} do
       conn = conn |> put_req_header("authorization", "Token " <> user.token)
 
       conn =
@@ -135,10 +135,21 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
   describe "feed" do
     setup [:create_articles_by_followed_user]
 
-    test "list article from followed users", %{conn: conn, user: user, article1: article} do
+    test "lists article from followed users", %{conn: conn, user: user, article1: article} do
       conn = conn |> put_req_header("authorization", "Token " <> user.token)
       conn = get(conn, Routes.api_article_path(conn, :feed))
       assert %{"articles" => articles, "articlesCount" => 1} = json_response(conn, 200)
+    end
+  end
+
+  describe "favorite" do
+    setup [:create_article_with_user]
+
+    test "favourites article", %{conn: conn, user: user, article: article} do
+      conn = conn |> put_req_header("authorization", "Token " <> user.token)
+      conn = post(conn, Routes.api_article_path(conn, :favorite, article.slug))
+      assert %{"article" => a} = json_response(conn, 200)
+      assert a["favorited"] == true
     end
   end
 

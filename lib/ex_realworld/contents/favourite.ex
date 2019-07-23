@@ -16,6 +16,6 @@ defmodule ExRealworld.Contents.Favourite do
   def changeset(favourite, attrs) do
     favourite
     |> cast(attrs, [:user_id, :article_id])
-    |> validate_required([])
+    |> validate_required([:user_id, :article_id])
   end
 end
