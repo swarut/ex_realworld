@@ -147,7 +147,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
 
     test "favourites article", %{conn: conn, user: user, article: article} do
       conn = conn |> put_req_header("authorization", "Token " <> user.token)
-      conn = post(conn, Routes.api_article_path(conn, :favorite, article.slug))
+      conn = post(conn, Routes.api_article_path(conn, :favourite, article.slug))
       assert %{"article" => a} = json_response(conn, 200)
       assert a["favorited"] == true
     end
@@ -158,7 +158,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
 
     test "unfavourites article", %{conn: conn, user: user, article: article} do
       conn = conn |> put_req_header("authorization", "Token " <> user.token)
-      conn = delete(conn, Routes.api_article_path(conn, :favorite, article.slug))
+      conn = delete(conn, Routes.api_article_path(conn, :favourite, article.slug))
       assert %{"article" => a } = json_response(conn, 200)
       assert a["favorited"] == false
     end

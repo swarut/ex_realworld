@@ -72,7 +72,7 @@ defmodule ExRealworldWeb.Api.ArticleController do
     |> render("articles.json", %{articles: articles})
   end
 
-  def favorite(conn, params) do
+  def favourite(conn, params) do
     current_user = conn.assigns[:current_user]
     slug = params["id"]
 
@@ -91,7 +91,7 @@ defmodule ExRealworldWeb.Api.ArticleController do
     |> render("show.json", %{article: article})
   end
 
-  def unfavorite(conn, params) do
+  def unfavourite(conn, params) do
     current_user = conn.assigns[:current_user]
     slug = params["id"]
 
