@@ -19,7 +19,7 @@ defmodule ExRealworld.Contents.Article do
     field :is_favourited, :boolean, virtual: true, default: false
 
     belongs_to :author, ExRealworld.Contents.User, foreign_key: :user_id
-    has_many :comments, Comment
+    has_many :comments, Comment, on_delete: :delete_all
     many_to_many :favourited_by, User, join_through: Favourite, on_delete: :delete_all
     many_to_many :tag_list, Tag, join_through: ArticleTag, on_delete: :delete_all
 

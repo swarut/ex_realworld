@@ -2,6 +2,7 @@ defmodule ExRealworld.Factory do
   use ExMachina.Ecto, repo: ExRealworld.Repo
 
   alias ExRealworld.Contents.Article
+  alias ExRealworld.Contents.Comment
   alias ExRealworld.Contents.Favourite
   alias ExRealworld.Contents.Tag
 
@@ -34,14 +35,22 @@ defmodule ExRealworld.Factory do
   end
 
   def article_factory do
+    author = insert(:contents_user)
     %Article{
       title: sequence(:title, &"A title #{&1}"),
       description: "Fire!",
       body: sequence(:body, &"Ore no uta o kike! #{&1}"),
-      author: build(:contents_user),
+      author: author,
       tag_list: [build(:tag)],
+      comments: [build(:comment, author: author)],
       favourited_by: [build(:contents_user)],
       slug: sequence(:slug, &"A slug #{&1}")
+    }
+  end
+
+  def comment_factory do
+    %Comment{
+      body: sequence(:body, &"comment-#{&1}")
     }
   end
 end
