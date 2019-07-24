@@ -99,6 +99,7 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
       conn = get(conn, Routes.api_article_path(conn, :show, article.slug))
       assert %{"article" => a} = json_response(conn, 200)
       assert a["id"] == article.id
+      assert length(a["comments"]) == 1
     end
   end
 
@@ -163,6 +164,14 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
       assert a["favorited"] == false
     end
   end
+
+  # describe "comments" do
+  #   setup [:create_article_with_comments]
+
+  #   test "returns comment of the article", %{conn: conn, article: article} do
+
+  #    end
+  # end
 
   def create_user(_) do
     {:ok, user: insert(:contents_user)}
@@ -248,4 +257,5 @@ defmodule ExRealworldWeb.Api.ArticleControllerTest do
 
     {:ok, [user: user, article1: article1]}
   end
+
 end

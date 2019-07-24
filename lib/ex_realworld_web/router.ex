@@ -29,10 +29,12 @@ defmodule ExRealworldWeb.Router do
 
     get "/articles/feed", ArticleController, :feed
     post "/articles/:id/favorite", ArticleController, :favourite
+    get "/articles/:slug/comments", ArticleController, :comments
+    post "/articles/:slug/comments", ArticleController, :add_comment
+    delete "/articles/:slug/comments/:id", ArticleController, :delete_comment
     delete "/articles/:id/favorite", ArticleController, :unfavourite
     resources "/articles", ArticleController
 
-    # post "/articles/:slug/comments", ArticleController, :add_comment
   end
 
   scope "/", ExRealworldWeb do
