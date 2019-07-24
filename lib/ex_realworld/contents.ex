@@ -21,7 +21,7 @@ defmodule ExRealworld.Contents do
 
   """
   def list_articles do
-    Repo.all(Article, preload: :author)
+    Repo.all(Article, preload: [:author, :comments])
   end
 
   @doc """
@@ -40,7 +40,7 @@ defmodule ExRealworld.Contents do
 
     # TODO: Investigate more why the below code doesn't work.
     # Repo.all(query, preload: :author)
-    Repo.all(query) |> Repo.preload([:author, :tag_list, :favourited_by])
+    Repo.all(query) |> Repo.preload([:author, :tag_list, :favourited_by, :comments])
   end
 
   @doc """
@@ -58,10 +58,10 @@ defmodule ExRealworld.Contents do
 
   """
   def get_article!(id),
-    do: Repo.get!(Article, id) |> Repo.preload([:author, :tag_list, :favourited_by])
+    do: Repo.get!(Article, id) |> Repo.preload([:author, :tag_list, :favourited_by, :comments])
 
   def get_article_by_slug(slug),
-    do: Repo.get_by(Article, slug: slug) |> Repo.preload([:author, :tag_list, :favourited_by])
+    do: Repo.get_by(Article, slug: slug) |> Repo.preload([:author, :tag_list, :favourited_by, :comments])
 
   @doc """
   Get feed for a specific user
@@ -83,7 +83,7 @@ defmodule ExRealworld.Contents do
     # sql = Repo.to_sql(:all, query)
     # IO.puts("SQL = #{inspect(sql)}")
 
-    Repo.all(query) |> Repo.preload([:author, :tag_list, :favourited_by])
+    Repo.all(query) |> Repo.preload([:author, :tag_list, :favourited_by, :comments])
   end
 
   @doc """
@@ -105,7 +105,7 @@ defmodule ExRealworld.Contents do
       |> Repo.insert()
 
     case article do
-      {:ok, article} -> {:ok, article |> Repo.preload([:author, :tag_list, :favourited_by])}
+      {:ok, article} -> {:ok, article |> Repo.preload([:author, :tag_list, :favourited_by, :comments])}
       {:error, changeset} -> {:error, changeset}
     end
   end

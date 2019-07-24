@@ -2,6 +2,7 @@ defmodule ExRealworldWeb.Api.ArticleView do
   use ExRealworldWeb, :view
 
   alias ExRealworldWeb.Api.ArticleView
+  alias ExRealworldWeb.Api.CommentView
   alias ExRealworldWeb.Api.ContentsUserView
 
   def render("articles.json", %{articles: articles}) do
@@ -27,7 +28,8 @@ defmodule ExRealworldWeb.Api.ArticleView do
       tagList: article.tag_list |> Enum.map(fn t -> t.title end),
       author: render_one(article.author, ContentsUserView, "user.json"),
       favourited_by: render_many(article.favourited_by, ContentsUserView, "user.json"),
-      favorited: article.is_favourited
+      favorited: article.is_favourited,
+      comments: render_many(article.comments, CommentView, "comment.json")
     }
   end
 
